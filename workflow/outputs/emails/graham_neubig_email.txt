@@ -1,0 +1,17 @@
+SUBJECT: PhD Interest: Low-Resource NMT & Explainable AI
+
+Dear Professor Neubig,
+
+I am writing to express my strong interest in your group's research, particularly your work on making advanced models accessible for diverse linguistic communities, as exemplified in "Revisiting Neural Machine Translation for Low-Resource Languages," and your contributions to interpretability in NLP.
+
+I am a final-year Master's student in Computer Science with a focus on Natural Language Processing, currently developing robust solutions for under-resourced languages. My most significant project involved building a data augmentation pipeline for a low-resource language pair, achieving a significant BLEU score improvement on a custom NMT model trained with PyTorch and Fairseq.
+
+My experience in developing and evaluating neural machine translation systems, particularly with limited data, directly aligns with your group's focus on low-resource and multilingual NLP. I am particularly eager to explore how my skills in cross-lingual transfer learning and model development using PyTorch and Hugging Face Transformers could contribute to your ongoing efforts in areas like efficient neural NLP models and developing more transparent and trustworthy AI systems, as discussed in your work on Explainable AI for NLP.
+
+I am deeply enthusiastic about the prospect of contributing to your pioneering research and would be thrilled to join your group as a PhD student. I have attached my resume, `graham_neubig_resume.pdf`, for your review and would welcome the opportunity to discuss my qualifications further.
+
+Thank you for your time and consideration.
+
+[Your Name]
+[Your Email]
+[GitHub / Website]

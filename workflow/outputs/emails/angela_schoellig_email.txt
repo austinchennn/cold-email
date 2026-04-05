@@ -1,0 +1,17 @@
+SUBJECT: Learning-based MPC for Agile Quadrotor Flight
+
+Dear Professor Schoellig,
+
+My interest in your group's research was particularly sparked by your work on "Learning-based Model Predictive Control for Safe and Agile Quadrotor Flight," which elegantly combines control theory with data-driven approaches.
+
+I am a prospective graduate student with a strong background in robotics and AI, having recently developed a robust reinforcement learning agent for autonomous navigation in dynamic environments, leveraging techniques for sample efficiency and safety constraint satisfaction. This project involved designing reward functions to balance task performance with collision avoidance, and implementing a model-based RL approach.
+
+My experience in developing safe and robust AI agents aligns well with your group's focus on learning-based control and safe autonomy, particularly in areas like safe reinforcement learning and robust control for agile aerial robots. I am keen to apply my skills in model-based RL and control system design to challenges such as integrating learned dynamics into MPC frameworks or enhancing human-in-the-loop shared autonomy for complex robotic tasks, drawing parallels to my work on ensuring agent safety in uncertain conditions.
+
+I am very eager to contribute to your research group's cutting-edge work as a PhD student (or research intern) and believe my background would be a strong asset. I am planning to apply for the upcoming application cycle and would appreciate the opportunity to discuss how my skills could contribute to your ongoing projects.
+
+Thank you for your time and consideration. My resume is attached for your review.
+
+[Your Name]
+[Your Email]
+[GitHub / Website]

@@ -1,0 +1,22 @@
+% PROJECT_TITLE:    Multilingual Low-Resource Named Entity Recognition
+% PROJECT_KEYWORDS: NLP, NER, multilingual, low-resource, transfer learning, cross-lingual, transformer, mBERT, XLM-R, token classification, data augmentation
+% PROJECT_TECH:     PyTorch, HuggingFace Transformers, Python, Weights & Biases, Docker
+% PROJECT_DURATION: 2023.09 -- 2024.05
+% PROJECT_ROLE:     Lead Researcher
+
+\resumeProjectHeading
+  {\textbf{Multilingual Low-Resource NER} $|$
+   \emph{PyTorch, HuggingFace Transformers, W\&B}}{2023.09 -- 2024.05}
+  \resumeItemListStart
+    \resumeItem{Designed a cross-lingual transfer learning pipeline for Named Entity
+      Recognition (NER) across 12 low-resource languages, using mBERT and XLM-R as
+      backbone models fine-tuned with a span-level CRF head.}
+    \resumeItem{Developed a data-augmentation strategy combining back-translation and
+      label-preserving token substitution; improved macro-F1 by \textbf{4.7\%} over
+      the supervised baseline on CoNLL-2003.}
+    \resumeItem{Conducted systematic ablation studies in a distributed training setup
+      (4$\times$ A100 GPUs) and tracked all experiments with Weights \& Biases;
+      reduced training wall-clock time by 38\% via gradient checkpointing.}
+    \resumeItem{Open-sourced training code and evaluation scripts on GitHub;
+      repository received 120+ stars within three months of release.}
+  \resumeItemListEnd

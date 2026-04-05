@@ -1,0 +1,23 @@
+% PROJECT_TITLE:    Real-Time 3D Object Detection for Autonomous Driving
+% PROJECT_KEYWORDS: computer vision, 3D detection, LiDAR, point cloud, autonomous driving, PointPillars, voxel, object detection, KITTI, real-time inference, CUDA kernel
+% PROJECT_TECH:     PyTorch, CUDA, Python, Open3D, ROS2, TensorRT, KITTI dataset
+% PROJECT_DURATION: 2022.09 -- 2023.06
+% PROJECT_ROLE:     Research Engineer
+
+\resumeProjectHeading
+  {\textbf{Real-Time 3D Object Detection (LiDAR)} $|$
+   \emph{PyTorch, CUDA, ROS2, TensorRT}}{2022.09 -- 2023.06}
+  \resumeItemListStart
+    \resumeItem{Developed a lightweight PointPillars-based 3D object detection model for
+      autonomous driving, processing 32-beam LiDAR point clouds at \textbf{25\,FPS}
+      on an NVIDIA Jetson AGX Xavier (15\,W power envelope).}
+    \resumeItem{Introduced a multi-scale voxel feature pyramid (MVFP) that captures both
+      fine-grained local geometry and long-range spatial context; improved car AP by
+      \textbf{3.2\%} on the KITTI \textit{hard} test split over the baseline.}
+    \resumeItem{Wrote a custom CUDA kernel for the pillar scatter operation, reducing
+      GPU memory-bandwidth usage by \textbf{28\%} and enabling a 1.4$\times$ throughput
+      improvement compared to the reference PyTorch implementation.}
+    \resumeItem{Integrated the detector into a ROS2 perception stack and validated
+      end-to-end on a real vehicle at 30\,km/h in a campus environment with zero
+      missed detections over a 500\,m test route.}
+  \resumeItemListEnd

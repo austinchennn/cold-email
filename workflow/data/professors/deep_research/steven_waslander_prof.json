@@ -1,0 +1,36 @@
+{
+  "name": "Steven Waslander",
+  "slug": "steven_waslander",
+  "university": "University of Toronto",
+  "exact_department": "Institute for Aerospace Studies (UTIAS) & Electrical & Computer Engineering (ECE)",
+  "sub_directions": [
+    "Autonomous Driving Systems",
+    "Multi-Robot Coordination and Control",
+    "Simultaneous Localization and Mapping (SLAM)",
+    "Deep Learning for Robotic Perception",
+    "Autonomous Aerial Vehicle Navigation"
+  ],
+  "tech_stack": [
+    "Deep Learning Frameworks",
+    "Computer Vision Libraries",
+    "Robotics Simulation Tools"
+  ],
+  "keywords": [
+    "Autonomous Vehicles",
+    "Robotics",
+    "Multi-Robot Systems",
+    "SLAM",
+    "Visual Odometry",
+    "Deep Learning",
+    "Aerial Robotics",
+    "UAVs",
+    "Perception",
+    "Localization"
+  ],
+  "recent_papers": [
+    "Data-Driven Environmental Lighting Compensation for Visual Odometry and SLAM",
+    "Advancing Autonomy in Small Aerial Vehicles",
+    "Enabling Multi-Robot Team Operation with Minimal Supervision"
+  ],
+  "interest_paragraph": "My interest in Professor Waslander's work is particularly drawn to the intersection of Multi-Robot Coordination and Control and Autonomous Aerial Vehicle Navigation, which aligns perfectly with my background in robotics and AI agent development. I am especially intrigued by research exploring data-driven approaches for environmental lighting compensation in Visual Odometry and SLAM, as this addresses critical real-world challenges in robotic perception. The prospect of contributing to projects focused on enabling multi-robot team operation with minimal supervision and enhancing the capabilities of small autonomous aerial vehicles is highly motivating for my graduate studies."
+}

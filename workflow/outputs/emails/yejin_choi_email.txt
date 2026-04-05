@@ -1,0 +1,19 @@
+SUBJECT: PhD Inquiry: Commonsense Reasoning & Open LLMs (Olmo)
+
+Dear Professor Choi,
+
+I am writing to you today, deeply impressed by your foundational work on Commonsense Reasoning, particularly as demonstrated in "Advancing Commonsense Reasoning through Large Language Models," and your leadership in open LLM development with projects like Olmo.
+
+I am a final-year Master's student in Computer Science at [Your University], specializing in Natural Language Processing. My recent project involved developing a knowledge-graph-enhanced LLM for mitigating misinformation, where I focused on improving factual consistency through commonsense knowledge injection and fine-tuning open-source models.
+
+My experience in building and fine-tuning LLMs, particularly for enhancing factual consistency via commonsense knowledge injection, directly aligns with your group's advancements in Commonsense Reasoning and open LLM development, such as Olmo. I am particularly excited by the potential of Agentic AI Systems for Scientific Discovery and how structured reasoning could enhance LLM capabilities for complex problem-solving, which resonates with my interest in applying NLP for social impact and planetary challenges.
+
+I am very keen to pursue a PhD position (or research internship) in your group and am confident my skills and research interests would be a valuable asset to your work on Commonsense Reasoning, LLM development, or Agentic AI. I plan to apply for the Fall [Year] PhD program, with the typical application deadline around December 1st, [Year].
+
+Thank you for your time and consideration. My resume is attached for your review.
+
+Sincerely,
+
+[Your Name]
+[Your Email]
+[GitHub / Website]

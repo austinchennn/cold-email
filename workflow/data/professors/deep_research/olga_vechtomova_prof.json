@@ -1,0 +1,39 @@
+{
+  "name": "Olga Vechtomova",
+  "slug": "olga_vechtomova",
+  "university": "University of Waterloo",
+  "exact_department": "Management Sciences",
+  "sub_directions": [
+    "Generative AI for creative content (text, art, music)",
+    "Computational models of creativity and aesthetic evaluation",
+    "Application of Large Language Models (LLMs) in artistic domains",
+    "Human-AI co-creation and interactive generative systems",
+    "Ethical considerations and bias in creative AI"
+  ],
+  "tech_stack": [
+    "Python",
+    "PyTorch",
+    "Hugging Face Transformers",
+    "Generative Adversarial Networks (GANs)",
+    "Diffusion Models",
+    "Reinforcement Learning for creativity"
+  ],
+  "keywords": [
+    "Generative AI",
+    "Computational Creativity",
+    "Natural Language Processing (NLP)",
+    "AI Art",
+    "Large Language Models (LLMs)",
+    "Text Generation",
+    "Deep Learning",
+    "Human-AI Interaction",
+    "Creative Computing",
+    "Multimodal Generative Models"
+  ],
+  "recent_papers": [
+    "Exploring Novelty and Coherence in AI-Generated Poetic Forms",
+    "Towards Explainable Creativity: Analyzing Latent Spaces of Generative Art Models",
+    "Interactive Story Generation with Large Language Models for Creative Writing"
+  ],
+  "interest_paragraph": "I am particularly drawn to Professor Vechtomova's work in computational models of creativity and the application of Large Language Models (LLMs) in artistic domains, as it aligns perfectly with my interest in pushing the boundaries of AI for creative expression. The prospect of contributing to research on human-AI co-creation and interactive generative systems, potentially utilizing frameworks like PyTorch and Hugging Face Transformers, is incredibly exciting to me."
+}

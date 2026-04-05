@@ -1,0 +1,34 @@
+{
+  "machine_learning": {
+    "aliases": ["ML", "deep learning", "neural networks", "artificial intelligence", "AI"],
+    "core_keywords": ["gradient descent", "backpropagation", "training", "inference", "generalization", "regularization", "optimization"]
+  },
+  "nlp": {
+    "aliases": ["natural language processing", "NLP", "computational linguistics", "language model"],
+    "core_keywords": ["transformer", "BERT", "GPT", "tokenization", "attention", "seq2seq", "text generation", "question answering", "information extraction"]
+  },
+  "computer_vision": {
+    "aliases": ["CV", "image processing", "visual perception", "scene understanding"],
+    "core_keywords": ["CNN", "ResNet", "ViT", "object detection", "segmentation", "YOLO", "3D reconstruction", "point cloud", "optical flow"]
+  },
+  "systems": {
+    "aliases": ["computer systems", "distributed systems", "OS", "systems architecture"],
+    "core_keywords": ["kernel", "scheduler", "distributed", "consensus", "Raft", "Paxos", "latency", "throughput", "fault tolerance", "replication"]
+  },
+  "robotics": {
+    "aliases": ["robot", "autonomous systems", "control theory", "embodied AI"],
+    "core_keywords": ["ROS", "SLAM", "motion planning", "manipulation", "sensor fusion", "PID", "trajectory", "kinematics", "path planning"]
+  },
+  "security": {
+    "aliases": ["cybersecurity", "information security", "privacy", "network security"],
+    "core_keywords": ["cryptography", "vulnerability", "exploit", "fuzzing", "side-channel", "differential privacy", "authentication", "intrusion detection"]
+  },
+  "hci": {
+    "aliases": ["human-computer interaction", "HCI", "UX", "user interface design"],
+    "core_keywords": ["usability", "prototype", "user study", "accessibility", "interaction design", "affective computing", "augmented reality"]
+  },
+  "data_systems": {
+    "aliases": ["database", "data management", "big data", "data engineering"],
+    "core_keywords": ["SQL", "query optimization", "index", "transactions", "OLAP", "data warehouse", "stream processing", "Spark", "Flink"]
+  }
+}

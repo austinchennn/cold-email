@@ -1,0 +1,38 @@
+{
+  "name": "Jonathan Kelly",
+  "slug": "jonathan_kelly",
+  "university": "University of Toronto",
+  "exact_department": "University of Toronto Institute for Aerospace Studies (UTIAS)",
+  "sub_directions": [
+    "Visual-Inertial Navigation and SLAM",
+    "Robust State Estimation (including certifiably optimal solvers)",
+    "Autonomous Navigation in Unstructured Outdoor Environments",
+    "Radar and Lidar Localization for Self-Driving Vehicles",
+    "Multi-Robot Systems and Field Robotics"
+  ],
+  "tech_stack": [
+    "Lidar and Radar Sensing",
+    "Vision-based Navigation Systems",
+    "Advanced State Estimation Algorithms (e.g., optimization-based methods)",
+    "Robotics Operating System (ROS)",
+    "Machine Learning for Perception and Terrain Assessment"
+  ],
+  "keywords": [
+    "Mobile Robotics",
+    "Visual-Inertial Odometry",
+    "SLAM",
+    "State Estimation",
+    "Autonomous Navigation",
+    "Field Robotics",
+    "Self-Driving Cars",
+    "Lidar Localization",
+    "Radar Localization",
+    "Space Robotics"
+  ],
+  "recent_papers": [
+    "Certifiably Optimal Solvers for Robotics State Estimation",
+    "Radar Localization for Self-Driving Vehicles",
+    "Multi-Robot Teach and Repeat Navigation"
+  ],
+  "interest_paragraph": "I am particularly drawn to Professor Kelly's work in robust state estimation, especially the application of certifiably optimal solvers and kernelized state estimation for mobile robots operating in unstructured outdoor environments. My background in robotics and AI agent development aligns well with the lab's focus on vision-based navigation and the use of Lidar/Radar for self-driving, and I am eager to contribute to projects like multi-robot teach and repeat navigation within the Toronto region."
+}

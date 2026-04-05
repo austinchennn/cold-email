@@ -1,0 +1,40 @@
+{
+  "name": "Angela Schoellig",
+  "slug": "angela_schoellig",
+  "university": "University of Toronto",
+  "exact_department": "Institute for Aerospace Studies (UTIAS) & Electrical & Computer Engineering (ECE)",
+  "sub_directions": [
+    "Learning-based Model Predictive Control (MPC)",
+    "Safe Reinforcement Learning for robotics",
+    "Human-in-the-loop shared autonomy",
+    "Robust control for agile aerial robots",
+    "Multi-robot coordination and control"
+  ],
+  "tech_stack": [
+    "Python",
+    "PyTorch",
+    "TensorFlow",
+    "ROS (Robot Operating System)",
+    "MATLAB/Simulink",
+    "Quadrotor platforms",
+    "Gazebo/MuJoCo"
+  ],
+  "keywords": [
+    "Learning-based control",
+    "Safe autonomy",
+    "Reinforcement learning",
+    "Model predictive control",
+    "Human-robot interaction",
+    "Aerial robotics",
+    "Quadrotors",
+    "Robust control",
+    "Shared autonomy",
+    "Multi-robot systems"
+  ],
+  "recent_papers": [
+    "Learning-based Model Predictive Control for Safe and Agile Quadrotor Flight",
+    "Human-in-the-Loop Shared Control for Teleoperated Robots with Learned Task Models",
+    "Safe Learning-based Control for Systems with Unknown Dynamics"
+  ],
+  "interest_paragraph": "As a prospective graduate student with a strong interest in robotics and experience with AI agents, I am particularly drawn to Professor Schoellig's work in learning-based control and safe autonomy. Her research on topics such as 'Learning-based Model Predictive Control for Safe and Agile Quadrotor Flight' and 'Human-in-the-Loop Shared Control for Teleoperated Robots' directly aligns with my aspirations to develop intelligent and robust robotic systems. I am eager to contribute to projects that combine advanced control theory with machine learning, especially within the context of safe and interactive robotic applications."
+}

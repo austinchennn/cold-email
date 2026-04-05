@@ -1,0 +1,25 @@
+{
+  "name": "Alice Johnson",
+  "slug": "alice_johnson",
+  "university": "MIT",
+  "exact_department": "EECS",
+  "sub_directions": [
+    "multilingual NLP",
+    "low-resource NER"
+  ],
+  "tech_stack": [
+    "PyTorch",
+    "HuggingFace"
+  ],
+  "keywords": [
+    "NLP",
+    "NER",
+    "multilingual",
+    "transformer",
+    "low-resource"
+  ],
+  "recent_papers": [
+    "Cross-lingual Transfer for Low-resource NER"
+  ],
+  "interest_paragraph": "I am particularly excited about your work on low-resource NER."
+}

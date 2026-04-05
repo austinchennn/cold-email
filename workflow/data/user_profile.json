@@ -1,0 +1,25 @@
+{
+  "name": "Ausint",
+  "email": "aabb",
+  "current_school": "多伦多大学",
+  "current_degree": "",
+  "major": "cs",
+  "gpa": "",
+  "target_degree": "研究生",
+  "research_domain": "robotics",
+  "sub_interests": [],
+  "target_regions": [
+    "多伦多地区"
+  ],
+  "target_universities": [],
+  "target_labs": [],
+  "skills": [
+    "aiagent"
+  ],
+  "research_experience": "",
+  "publications": [],
+  "timeline": "",
+  "language_scores": "",
+  "additional_notes": "",
+  "max_professors": 5
+}

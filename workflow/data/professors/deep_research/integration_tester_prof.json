@@ -1,0 +1,24 @@
+{
+  "name": "Integration Tester",
+  "slug": "integration_tester",
+  "university": "Test University",
+  "exact_department": "CS",
+  "sub_directions": [
+    "multilingual NLP",
+    "low-resource NER"
+  ],
+  "tech_stack": [
+    "PyTorch",
+    "HuggingFace"
+  ],
+  "keywords": [
+    "NLP",
+    "NER",
+    "multilingual"
+  ],
+  "recent_papers": [
+    "A Test Paper on NER"
+  ],
+  "interest_paragraph": "I am excited by your work.",
+  "email": "tester@example.com"
+}

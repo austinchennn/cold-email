@@ -1,0 +1,17 @@
+SUBJECT: Research Inquiry: Self-supervised Pre-training and LLM Reliability
+
+Dear Professor Manning,
+
+Your group's recent work on 'hallucinating legal LLMs' deeply resonates with my interest in ensuring the robustness and reliability of advanced NLP systems.
+
+I am a Master's student in Computer Science at [Your University] with a strong background in deep learning for NLP, particularly in transformer-based architectures. My most recent project involved developing a novel self-supervised pre-training objective to improve factual consistency in summarization models, which showed promising results in reducing generated inaccuracies.
+
+My experience in designing and evaluating pre-training strategies, along with my familiarity with attention mechanisms and computational semantics, aligns closely with your group's advancements in self-supervised model pre-training and machine reasoning. I am particularly interested in exploring how techniques similar to those used in Stanza or Universal Dependencies could further enhance the semantic parsing capabilities and reduce hallucination in large language models.
+
+I am highly motivated to pursue a PhD or a research internship within your group at Stanford, contributing to cutting-edge research in areas like Neural Machine Translation or the reliability of large language models. I am available to start in [mention a general timeframe, e.g., Fall 2024 / Summer 2025].
+
+Thank you for your time and consideration. My resume is attached for your review.
+
+[Your Name]
+[Your Email]
+[GitHub / Website]

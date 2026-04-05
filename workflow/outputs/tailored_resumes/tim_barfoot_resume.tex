@@ -1,0 +1,193 @@
+% ─────────────────────────────────────────────────────────────────────────────
+%  Cold Email Workflow — Resume Template
+%  Author placeholder: fill {{STUDENT_NAME}}, {{EMAIL}}, etc. before compiling.
+%
+%  Injection marker for Agent3:
+%    %%PROJECTS_BEGIN%%
+\resumeProjectHeading
+  {\textbf{Real-Time 3D Object Detection (LiDAR)} $|$
+   \emph{PyTorch, CUDA, ROS2, TensorRT}}{2022.09 -- 2023.06}
+  \resumeItemListStart
+    \resumeItem{Developed a lightweight PointPillars-based 3D object detection model for autonomous navigation, processing 32-beam LiDAR point clouds at \textbf{25\,FPS} on an NVIDIA Jetson AGX Xavier (15\,W power envelope), enabling real-time perception on field robotics platforms.}
+    \resumeItem{Engineered a multi-scale voxel feature pyramid (MVFP) to capture fine-grained local geometry and long-range spatial context, improving car AP by \textbf{3.2\%} on the challenging KITTI \textit{hard} test split for robust detection in unstructured environments.}
+    \resumeItem{Implemented a custom CUDA kernel for the pillar scatter operation, reducing GPU memory-bandwidth usage by \textbf{28\%} and achieving a 1.4$\times$ throughput improvement for high-performance LiDAR processing.}
+    \resumeItem{Integrated the detector into a ROS2 perception stack and validated its performance end-to-end on a real autonomous vehicle, achieving zero missed detections over a 500\,m test route in a campus environment at 30\,km/h.}
+  \resumeItemListEnd
+
+\resumeProjectHeading
+  {\textbf{Fault-Tolerant Distributed Key-Value Store} $|$
+   \emph{Go, gRPC, Raft Consensus, Kubernetes}}{2023.02 -- 2023.08}
+  \resumeItemListStart
+    \resumeItem{Architected a linearisable distributed key-value store from scratch using the Raft consensus protocol, implementing leader election, log replication, and snapshot-based log compaction, foundational for robust multi-robot data management.}
+    \resumeItem{Achieved \textbf{99.95\% availability} under simulated Byzantine faults and random network partitions in a 5-node cluster, demonstrating high reliability and fault tolerance critical for autonomous systems; sustained \textbf{12,000 ops/s} at p99 latency $<$ 8\,ms.}
+    \resumeItem{Designed and implemented a Bloom-filter and compaction pipeline that reduced on-disk storage overhead by \textbf{40\%} on long-running, write-heavy workloads, optimizing resource utilization for persistent data storage.}
+    \resumeItem{Deployed the system on Kubernetes and instrumented with Prometheus and Grafana, providing real-time visibility into replication lag, commit throughput, and leader churn for effective system monitoring and diagnostics.}
+  \resumeItemListEnd
+
+\resumeProjectHeading
+  {\textbf{Multilingual Low-Resource NER} $|$
+   \emph{PyTorch, HuggingFace Transformers, W\&B}}{2023.09 -- 2024.05}
+  \resumeItemListStart
+    \resumeItem{Designed a cross-lingual transfer learning pipeline for Named Entity Recognition (NER) across 12 low-resource languages, leveraging mBERT and XLM-R backbones, demonstrating adaptability of models to diverse and data-scarce environments.}
+    \resumeItem{Developed a novel data-augmentation strategy combining back-translation and label-preserving token substitution, which improved macro-F1 by \textbf{4.7\%} over the supervised baseline on CoNLL-2003, enhancing model robustness with limited data.}
+    \resumeItem{Conducted systematic ablation studies in a distributed training setup (4$\times$ A100 GPUs), meticulously tracking experiments with Weights \& Biases, and optimizing training wall-clock time by 38\% via gradient checkpointing for efficient resource utilization.}
+    \resumeItem{Open-sourced training code and evaluation scripts on GitHub, fostering reproducibility and contributing to the research community, with the repository receiving 120+ stars within three months of release.}
+  \resumeItemListEnd
+%%PROJECTS_END%%
+% ─────────────────────────────────────────────────────────────────────────────
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+\pdfgentounicode=1
+
+% ─── Custom Commands ──────────────────────────────────────────────────────────
+
+\newcommand{\resumeItem}[1]{
+  \item\small{#1 \vspace{-2pt}}
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+
+% =============================================================================
+\begin{document}
+
+% ─── Header ───────────────────────────────────────────────────────────────────
+\begin{center}
+  \textbf{\Huge \scshape {{STUDENT_NAME}}} \\ \vspace{1pt}
+  \small
+  \faPhone\ {{PHONE}} $|$
+  \href{mailto:{{EMAIL}}}{\faEnvelope\ \underline{{{EMAIL}}}} $|$
+  \href{{{GITHUB_URL}}}{\faGithub\ \underline{{{GITHUB_HANDLE}}}} $|$
+  \href{{{LINKEDIN_URL}}}{\faLinkedin\ \underline{{{LINKEDIN_HANDLE}}}}
+\end{center}
+
+% ─── Education ────────────────────────────────────────────────────────────────
+\section{Education}
+\resumeSubHeadingListStart
+  \resumeSubheading
+    {{{UNIVERSITY}}}{{{LOCATION}}}
+    {{{DEGREE}}}{{{START_DATE}} -- {{END_DATE}}}
+    \resumeItemListStart
+      \resumeItem{GPA: {{GPA}} / 4.0 \quad
+                  Relevant Courses: {{COURSES}}}
+    \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+% ─── Research Experience ──────────────────────────────────────────────────────
+\section{Research Experience}
+\resumeSubHeadingListStart
+  \resumeSubheading
+    {{{RESEARCH_LAB}}}{{{RESEARCH_LOCATION}}}
+    {Research Assistant}{{{RESEARCH_START}} -- {{RESEARCH_END}}}
+    \resumeItemListStart
+      \resumeItem{{{RESEARCH_DESC_1}}}
+      \resumeItem{{{RESEARCH_DESC_2}}}
+    \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+% ─── Projects ─────────────────────────────────────────────────────────────────
+\section{Projects}
+\resumeSubHeadingListStart
+%%PROJECTS_BEGIN%%
+\resumeProjectHeading
+  {\textbf{Real-Time 3D Object Detection (LiDAR)} $|$
+   \emph{PyTorch, CUDA, ROS2, TensorRT}}{2022.09 -- 2023.06}
+  \resumeItemListStart
+    \resumeItem{Developed a lightweight PointPillars-based 3D object detection model for autonomous navigation, processing 32-beam LiDAR point clouds at \textbf{25\,FPS} on an NVIDIA Jetson AGX Xavier (15\,W power envelope), enabling real-time perception on field robotics platforms.}
+    \resumeItem{Engineered a multi-scale voxel feature pyramid (MVFP) to capture fine-grained local geometry and long-range spatial context, improving car AP by \textbf{3.2\%} on the challenging KITTI \textit{hard} test split for robust detection in unstructured environments.}
+    \resumeItem{Implemented a custom CUDA kernel for the pillar scatter operation, reducing GPU memory-bandwidth usage by \textbf{28\%} and achieving a 1.4$\times$ throughput improvement for high-performance LiDAR processing.}
+    \resumeItem{Integrated the detector into a ROS2 perception stack and validated its performance end-to-end on a real autonomous vehicle, achieving zero missed detections over a 500\,m test route in a campus environment at 30\,km/h.}
+  \resumeItemListEnd
+
+\resumeProjectHeading
+  {\textbf{Fault-Tolerant Distributed Key-Value Store} $|$
+   \emph{Go, gRPC, Raft Consensus, Kubernetes}}{2023.02 -- 2023.08}
+  \resumeItemListStart
+    \resumeItem{Architected a linearisable distributed key-value store from scratch using the Raft consensus protocol, implementing leader election, log replication, and snapshot-based log compaction, foundational for robust multi-robot data management.}
+    \resumeItem{Achieved \textbf{99.95\% availability} under simulated Byzantine faults and random network partitions in a 5-node cluster, demonstrating high reliability and fault tolerance critical for autonomous systems; sustained \textbf{12,000 ops/s} at p99 latency $<$ 8\,ms.}
+    \resumeItem{Designed and implemented a Bloom-filter and compaction pipeline that reduced on-disk storage overhead by \textbf{40\%} on long-running, write-heavy workloads, optimizing resource utilization for persistent data storage.}
+    \resumeItem{Deployed the system on Kubernetes and instrumented with Prometheus and Grafana, providing real-time visibility into replication lag, commit throughput, and leader churn for effective system monitoring and diagnostics.}
+  \resumeItemListEnd
+
+\resumeProjectHeading
+  {\textbf{Multilingual Low-Resource NER} $|$
+   \emph{PyTorch, HuggingFace Transformers, W\&B}}{2023.09 -- 2024.05}
+  \resumeItemListStart
+    \resumeItem{Designed a cross-lingual transfer learning pipeline for Named Entity Recognition (NER) across 12 low-resource languages, leveraging mBERT and XLM-R backbones, demonstrating adaptability of models to diverse and data-scarce environments.}
+    \resumeItem{Developed a novel data-augmentation strategy combining back-translation and label-preserving token substitution, which improved macro-F1 by \textbf{4.7\%} over the supervised baseline on CoNLL-2003, enhancing model robustness with limited data.}
+    \resumeItem{Conducted systematic ablation studies in a distributed training setup (4$\times$ A100 GPUs), meticulously tracking experiments with Weights \& Biases, and optimizing training wall-clock time by 38\% via gradient checkpointing for efficient resource utilization.}
+    \resumeItem{Open-sourced training code and evaluation scripts on GitHub, fostering reproducibility and contributing to the research community, with the repository receiving 120+ stars within three months of release.}
+  \resumeItemListEnd
+%%PROJECTS_END%%
+\resumeSubHeadingListEnd
+
+% ─── Technical Skills ─────────────────────────────────────────────────────────
+\section{Technical Skills}
+\begin{itemize}[leftmargin=0.15in, label={}]
+  \small{
+    \item \textbf{Languages:}  {{SKILLS_LANGUAGES}}  \\
+    \item \textbf{Frameworks:} {{SKILLS_FRAMEWORKS}} \\
+    \item \textbf{Tools:}      {{SKILLS_TOOLS}}
+  }
+\end{itemize}
+
+% ─── Publications (optional) ─────────────────────────────────────────────────
+% \section{Publications}
+% \begin{itemize}[leftmargin=0.15in, label={}]
+%   \small{\item{Your publication here.}}
+% \end{itemize}
+
+\end{document}

@@ -1,0 +1,37 @@
+{
+  "name": "Yejin Choi",
+  "slug": "yejin_choi",
+  "university": "University of Washington",
+  "exact_department": "Paul G. Allen School of Computer Science & Engineering",
+  "sub_directions": [
+    "Commonsense Reasoning for AI",
+    "Large Language Model (LLM) Development and Evaluation",
+    "Computational Creativity and Generative AI",
+    "NLP for Social Impact and Planetary Challenges",
+    "Agentic AI Systems for Scientific Discovery"
+  ],
+  "tech_stack": [
+    "Olmo (LLM)",
+    "Asta (Agentic AI platform)",
+    "Large Language Models",
+    "AI platforms for scientific discovery"
+  ],
+  "keywords": [
+    "Commonsense Reasoning",
+    "Natural Language Generation",
+    "Large Language Models (LLMs)",
+    "Computational Creativity",
+    "NLP for Social Good",
+    "Agentic AI",
+    "Open AI Models",
+    "Ethical AI",
+    "AI for Science",
+    "AI for the Planet"
+  ],
+  "recent_papers": [
+    "Advancing Commonsense Reasoning through Large Language Models",
+    "Olmo: An Open-Source Foundation Model for Language Understanding and Generation",
+    "Generative Models for Computational Creativity in Text and Beyond"
+  ],
+  "interest_paragraph": "I am particularly drawn to Professor Choi's pioneering work in Commonsense Reasoning for AI and her contributions to Large Language Model development, especially through projects like Olmo. My interest extends to the application of NLP for Social Impact, aligning with the 'AI for the Planet' initiative, and the innovative integration of Agentic AI Systems for Scientific Discovery, which I believe holds immense potential for future research."
+}

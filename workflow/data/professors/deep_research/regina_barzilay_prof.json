@@ -1,0 +1,39 @@
+{
+  "name": "Regina Barzilay",
+  "slug": "regina_barzilay",
+  "university": "Massachusetts Institute of Technology (MIT)",
+  "exact_department": "Electrical Engineering and Computer Science (EECS)",
+  "sub_directions": [
+    "Deep Learning for Natural Language Processing",
+    "Generative AI for Molecular and Protein Design",
+    "AI for Disease Prediction and Early Detection (e.g., cancer, flu)",
+    "Computational Biology and AI-driven Drug Discovery",
+    "Interpretability and Trustworthy AI in Medical Applications"
+  ],
+  "tech_stack": [
+    "Deep Learning frameworks",
+    "Generative Adversarial Networks (GANs)",
+    "Machine Learning models for predictive analytics",
+    "Computational Biology tools",
+    "CT scan analysis",
+    "Mammography analysis"
+  ],
+  "keywords": [
+    "Natural Language Processing",
+    "Deep Learning",
+    "Generative AI",
+    "Computational Biology",
+    "Drug Discovery",
+    "Precision Medicine",
+    "Cancer Detection",
+    "Disease Prediction",
+    "AI in Healthcare",
+    "Machine Translation"
+  ],
+  "recent_papers": [
+    "MIT scientists debut a generative AI model that could create molecules addressing hard-to-treat diseases",
+    "AI maps how a new antibiotic targets gut bacteria",
+    "MIT researchers develop AI tool to improve flu vaccine strain selection"
+  ],
+  "interest_paragraph": "I am particularly drawn to Professor Barzilay's pioneering work at the intersection of AI, computational biology, and medical applications. My interest is specifically piqued by the development of generative AI models for molecular design and drug discovery, as well as the application of AI for disease prediction and early detection, such as in lung cancer and flu vaccine selection. The innovative use of deep learning to tackle complex health challenges, as exemplified in papers like 'MIT scientists debut a generative AI model that could create molecules addressing hard-to-treat diseases,' aligns perfectly with my research aspirations."
+}

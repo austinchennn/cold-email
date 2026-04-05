@@ -1,0 +1,38 @@
+{
+  "name": "Graham Neubig",
+  "slug": "graham_neubig",
+  "university": "Carnegie Mellon University (CMU)",
+  "exact_department": "Language Technologies Institute (LTI)",
+  "sub_directions": [
+    "Low-resource Machine Translation",
+    "Multilingual Natural Language Processing",
+    "Interpretability and Explainability in NLP",
+    "Efficient Neural NLP Models",
+    "Cross-lingual Transfer Learning"
+  ],
+  "tech_stack": [
+    "PyTorch",
+    "Hugging Face Transformers",
+    "Python",
+    "Fairseq",
+    "OpenNMT"
+  ],
+  "keywords": [
+    "Machine Translation",
+    "Low-resource NLP",
+    "Multilingual NLP",
+    "Interpretability",
+    "Neural Networks",
+    "Cross-lingual Transfer",
+    "Data Augmentation",
+    "Explainable AI",
+    "Natural Language Generation",
+    "Computational Linguistics"
+  ],
+  "recent_papers": [
+    "Revisiting Neural Machine Translation for Low-Resource Languages",
+    "Multilingual Large Language Models: A Survey",
+    "Explainable AI for NLP: A Survey"
+  ],
+  "interest_paragraph": "I am particularly drawn to Professor Neubig's pioneering work in low-resource and multilingual NLP, especially his contributions to making advanced models accessible and effective for diverse linguistic communities. My interest is further amplified by his research into the interpretability of neural models, which aligns with my goal of developing transparent and trustworthy AI systems. I am eager to explore how his group utilizes tools like PyTorch and Hugging Face Transformers to tackle challenges such as those discussed in \"Revisiting Neural Machine Translation for Low-Resource Languages,\" and contribute to building more equitable and understandable language technologies."
+}

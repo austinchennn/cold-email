@@ -1,0 +1,17 @@
+SUBJECT: Research Interest: Interactive Story Generation and Computational Creativity
+
+Dear Professor Vechtomova,
+
+I was particularly intrigued by your work on "Interactive Story Generation with Large Language Models for Creative Writing," which deeply resonates with my interest in human-AI co-creation.
+
+My name is [Your Name], and I am a [e.g., Master's student in Computer Science at XYZ University / final-year undergraduate student specializing in AI]. My recent project involved developing a multimodal generative system using Diffusion Models and fine-tuned LLMs to create short animated narratives from user prompts, focusing on coherence and stylistic control.
+
+This experience, particularly with PyTorch and Hugging Face Transformers, has equipped me with practical skills in building and evaluating generative models. I am keen to apply this expertise to your group's research on computational models of creativity and the application of LLMs in artistic domains, especially exploring human-AI co-creation and interactive generative systems.
+
+I am very eager to contribute to your lab's innovative research, whether through a PhD position or a research internship. I am available to discuss my qualifications further at your convenience.
+
+Thank you for your time and consideration. My resume is attached for your review.
+
+[Your Name]
+[Your Email]
+[GitHub / Website]

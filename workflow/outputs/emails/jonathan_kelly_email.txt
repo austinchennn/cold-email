@@ -1,0 +1,19 @@
+SUBJECT: Research Interest: Certifiably Optimal Solvers for Autonomous Navigation
+
+Dear Professor Kelly,
+
+I am writing to express my strong interest in your group's work, particularly your research on certifiably optimal solvers and kernelized state estimation for mobile robots operating in unstructured outdoor environments.
+
+My name is [Your Name], and I am a [Your Current Role/Student Status] with a strong background in robotics and AI agent development. My recent project involved developing a robust visual-inertial odometry system for autonomous ground vehicles, focusing on performance in challenging, dynamic environments.
+
+This experience has equipped me with practical skills in advanced state estimation algorithms and vision-based navigation systems, which I believe align well with your lab's focus on Lidar and Radar localization for self-driving vehicles and multi-robot systems. I am particularly eager to contribute to projects involving autonomous navigation in unstructured outdoor environments, similar to your work on multi-robot teach and repeat navigation.
+
+I am seeking a PhD position within your research group, where I can apply my expertise to advance the frontiers of robust state estimation and autonomous navigation. I am confident my skills can make a meaningful contribution to your ongoing research.
+
+Thank you for your time and consideration. I have attached my resume for your review, which provides further details on my qualifications and projects.
+
+Sincerely,
+
+[Your Name]
+[Your Email]
+[GitHub / Website]

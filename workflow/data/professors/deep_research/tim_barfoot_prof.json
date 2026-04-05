@@ -1,0 +1,39 @@
+{
+  "name": "Tim Barfoot",
+  "slug": "tim_barfoot",
+  "university": "University of Toronto",
+  "exact_department": "University of Toronto Institute for Aerospace Studies (UTIAS)",
+  "sub_directions": [
+    "Vision-based Navigation for Mobile Robots",
+    "Teach-and-Repeat Robotics (Lidar & Multi-robot systems)",
+    "Certifiably Optimal State Estimation",
+    "Autonomous Navigation in Unstructured Environments",
+    "Radar Localization for Self-Driving Vehicles"
+  ],
+  "tech_stack": [
+    "Computer Vision",
+    "Lidar Processing",
+    "Radar Processing",
+    "State Estimation Algorithms (e.g., SLAM, Optimization-based solvers)",
+    "Field Robotics Platforms",
+    "Robotics Operating System (ROS)"
+  ],
+  "keywords": [
+    "Space Robotics",
+    "Visual Odometry",
+    "Autonomous Navigation",
+    "Teach-and-Repeat",
+    "State Estimation",
+    "Lidar",
+    "Radar Localization",
+    "Field Robotics",
+    "Certifiable Optimization",
+    "Unstructured Environments"
+  ],
+  "recent_papers": [
+    "Kernelized State Estimation for Mobile Robots",
+    "Certifiably Optimal Solvers for Robotics Applications",
+    "Multi-Robot Teach-and-Repeat Navigation"
+  ],
+  "interest_paragraph": "I am particularly drawn to Professor Barfoot's work in vision-based navigation and teach-and-repeat robotics, especially its application to autonomous navigation in unstructured environments. My background in AI agents aligns well with developing intelligent perception and control systems for mobile robots, and I am keen to explore topics such as certifiably optimal state estimation or radar localization for self-driving vehicles within the University of Toronto."
+}

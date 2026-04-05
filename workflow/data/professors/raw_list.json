@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Integration Tester",
+    "email": "tester@example.com",
+    "university": "Test University",
+    "department": "CS",
+    "research_areas": [
+      "NLP",
+      "multilingual models"
+    ],
+    "lab_url": "",
+    "profile_url": ""
+  }
+]

@@ -1,0 +1,36 @@
+{
+  "name": "Christopher D. Manning",
+  "slug": "christopher_d_manning",
+  "university": "Stanford University",
+  "exact_department": "Computer Science and Linguistics",
+  "sub_directions": [
+    "Neural Machine Translation",
+    "Self-supervised Model Pre-training",
+    "Computational Semantics",
+    "Dependency Parsing",
+    "Machine Reasoning"
+  ],
+  "tech_stack": [
+    "Stanza toolkit",
+    "Stanford CoreNLP",
+    "Universal Dependencies"
+  ],
+  "keywords": [
+    "Deep Learning",
+    "Natural Language Processing",
+    "Neural Networks",
+    "Computational Linguistics",
+    "Machine Translation",
+    "Information Extraction",
+    "Question Answering",
+    "Self-supervised Learning",
+    "Semantic Parsing",
+    "Attention Mechanisms"
+  ],
+  "recent_papers": [
+    "Humans and transformer LMs: Abstraction drives language learning",
+    "Our paper on hallucinating legal LLMs",
+    "Effective Approaches to Attention-based Neural Machine Translation"
+  ],
+  "interest_paragraph": "I am particularly drawn to Professor Manning's pioneering work in applying deep learning to Natural Language Processing, especially his contributions to areas like Neural Machine Translation and Self-supervised Model Pre-training. I am also fascinated by the group's practical impact, evident in the development of widely used tools such as Stanza and Stanford CoreNLP, and their recent research on topics like 'hallucinating legal LLMs' which addresses critical real-world challenges in AI."
+}

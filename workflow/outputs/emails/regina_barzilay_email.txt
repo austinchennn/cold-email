@@ -1,0 +1,17 @@
+SUBJECT: Generative AI for Molecular Design & Disease Prediction
+
+Dear Professor Barzilay,
+
+I am writing to you today, deeply impressed by your group's pioneering work at the intersection of AI and healthcare, particularly the development of generative AI models for novel molecule creation, as highlighted in the recent work 'MIT scientists debut a generative AI model that could create molecules addressing hard-to-treat diseases.'
+
+I am a final-year Master's student in Computer Science with a strong foundation in deep learning and computational biology. My research experience centers on developing generative models for molecular structures and applying predictive analytics to complex biological datasets.
+
+My work developing generative models directly aligns with your group's efforts in **generative AI for molecular and protein design**, aiming to accelerate **drug discovery** for hard-to-treat diseases. Furthermore, my experience in **predictive analytics** for biological data strongly resonates with your focus on **AI for disease prediction and early detection**, including applications in cancer and flu vaccine selection. I am particularly eager to contribute to projects that leverage **deep learning** for **precision medicine** and **computational biology**.
+
+Given this strong alignment, I am writing to express my profound interest in pursuing a PhD position or a research internship within your group, contributing to your cutting-edge research. I am highly motivated to apply my technical skills and research passion to advance the field of AI in healthcare.
+
+Thank you for your time and consideration. My resume, detailing my qualifications and projects, is attached for your review.
+
+[Your Name]
+[Your Email]
+[GitHub / Website]

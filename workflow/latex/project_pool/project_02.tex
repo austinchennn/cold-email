@@ -1,0 +1,22 @@
+% PROJECT_TITLE:    Fault-Tolerant Distributed Key-Value Store
+% PROJECT_KEYWORDS: distributed systems, Raft, consensus, fault tolerance, key-value store, log replication, leader election, log compaction, linearizability, network partition
+% PROJECT_TECH:     Go, gRPC, Raft, Prometheus, Grafana, Docker, Kubernetes
+% PROJECT_DURATION: 2023.02 -- 2023.08
+% PROJECT_ROLE:     Systems Engineer
+
+\resumeProjectHeading
+  {\textbf{Fault-Tolerant Distributed Key-Value Store} $|$
+   \emph{Go, gRPC, Raft Consensus, Kubernetes}}{2023.02 -- 2023.08}
+  \resumeItemListStart
+    \resumeItem{Built a linearisable distributed key-value store from scratch using the
+      Raft consensus protocol, implementing leader election, log replication,
+      membership changes, and snapshot-based log compaction.}
+    \resumeItem{Achieved \textbf{99.95\% availability} under simulated Byzantine faults
+      and random network partitions in a 5-node cluster; sustained \textbf{12,000 ops/s}
+      at p99 latency $<$ 8\,ms under peak load.}
+    \resumeItem{Designed a Bloom-filter + compaction pipeline that reduced on-disk
+      storage overhead by \textbf{40\%} on long-running write-heavy workloads.}
+    \resumeItem{Deployed on Kubernetes; instrumented the cluster with Prometheus and
+      Grafana dashboards providing real-time visibility into replication lag,
+      commit throughput, and leader churn.}
+  \resumeItemListEnd

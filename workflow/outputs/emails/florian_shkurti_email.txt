@@ -1,0 +1,19 @@
+SUBJECT: Robot Learning with Safety Guarantees
+
+Dear Professor Shkurti,
+
+I was particularly interested in your recent work on "Learning-based Task and Motion Planning with Safety Guarantees," which directly addresses the critical challenge of deploying robots safely in complex, dynamic environments.
+
+I am a [Your Degree Level] student in [Your Field] at [Your University], with a strong background in developing AI agents for robotic applications. My most relevant project involved designing a reinforcement learning agent for dexterous manipulation, where I focused on incorporating safety constraints and leveraging simulated environments for training and evaluation.
+
+My experience in developing robust AI agents and working with simulated environments aligns well with your lab's emphasis on reasoning and learning for robotics. I am particularly eager to contribute to projects exploring safety guarantees during robot learning and deployment, potentially leveraging differentiable physics simulators and generative models for robust agent development, as highlighted in your work on "Differentiable Physics and Generative Models for Robot Manipulation Simulation."
+
+I am deeply interested in pursuing a PhD or a research internship in your lab, as I believe my skills and research interests are a strong match for your group's innovative work. I am confident I can make meaningful contributions to your ongoing research.
+
+Thank you for your time and consideration. My resume is attached for your review.
+
+Sincerely,
+
+[Your Name]
+[Your Email]
+[GitHub / Website]

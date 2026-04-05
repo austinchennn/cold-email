@@ -1,0 +1,15 @@
+SUBJECT: Multi-Robot Team Operation & Data-Driven SLAM
+
+My interest in your group's work, particularly the research on "Data-Driven Environmental Lighting Compensation for Visual Odometry and SLAM," deeply resonates with my background in robotic perception challenges.
+
+I am a final-year undergraduate student in Robotics Engineering with a strong foundation in AI agent development and autonomous systems. My most relevant project involved developing a robust multi-UAV cooperative navigation system, where I implemented a decentralized path planning algorithm and a visual odometry pipeline using deep learning for feature extraction in varying illumination conditions.
+
+My experience in designing AI agents for complex, real-world robotic scenarios directly aligns with your group's focus on Multi-Robot Coordination and Control and Autonomous Aerial Vehicle Navigation. I am particularly eager to contribute to projects exploring data-driven approaches for enhancing visual odometry robustness and enabling multi-robot team operation with minimal supervision, leveraging my skills in deep learning frameworks and computer vision libraries.
+
+I am highly motivated to pursue a PhD (or research internship) under your supervision, contributing to your cutting-edge research at the intersection of autonomous driving systems and multi-robot intelligence. I believe my technical skills and research interests are an excellent fit for your lab.
+
+Thank you for your time and consideration. My resume is attached for your review.
+
+[Your Name]
+[Your Email]
+[GitHub / Website]

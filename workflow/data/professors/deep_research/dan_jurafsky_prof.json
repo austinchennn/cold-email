@@ -1,0 +1,37 @@
+{
+  "name": "Dan Jurafsky",
+  "slug": "dan_jurafsky",
+  "university": "Stanford University",
+  "exact_department": "Computer Science and Linguistics",
+  "sub_directions": [
+    "Social and Ethical Implications of NLP/LLMs",
+    "Computational Linguistics and Pragmatics for LLM Behavior",
+    "NLP applications in Food Science and Sustainability",
+    "Robust Speech Recognition for Language Disparities",
+    "Cognitively-Inspired LLM Creativity"
+  ],
+  "tech_stack": [
+    "Large Language Models (LLMs)",
+    "Deep Learning frameworks",
+    "Natural Language Processing libraries",
+    "Speech recognition toolkits"
+  ],
+  "keywords": [
+    "Natural Language Processing",
+    "Large Language Models",
+    "AI Ethics",
+    "Computational Linguistics",
+    "Speech Recognition",
+    "Food Science NLP",
+    "Social AI",
+    "Pragmatics",
+    "Cognitive Science",
+    "Deep Learning"
+  ],
+  "recent_papers": [
+    "Accommodation and Epistemic Vigilance: A Pragmatic Account of Why LLMs Fail to Challenge Harmful Beliefs",
+    "Sycophantic AI Decreases Prosocial Intentions and Promotes Dependence.",
+    "AI for Sustainable Future Foods."
+  ],
+  "interest_paragraph": "I am particularly drawn to Professor Jurafsky's interdisciplinary approach, especially his work on the social and ethical implications of NLP, as seen in papers like 'Sycophantic AI Decreases Prosocial Intentions and Promotes Dependence.' The application of computational linguistics to understand LLM behavior and enhance creativity, alongside the novel direction of NLP for Food Science and sustainability, deeply resonates with my research interests. I am eager to explore how advanced LLMs can be developed to be more robust and socially aware, leveraging insights from pragmatics and cognitive science."
+}

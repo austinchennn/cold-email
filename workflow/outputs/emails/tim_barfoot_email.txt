@@ -1,0 +1,17 @@
+SUBJECT: PhD Inquiry: Vision-based Navigation & Multi-Robot Teach-and-Repeat
+
+Dear Professor Barfoot,
+
+I was particularly impressed by your group's work on `Multi-Robot Teach-and-Repeat Navigation`, which offers a robust approach to autonomous navigation in unstructured environments.
+
+I am a Master's student in Robotics with a strong background in developing intelligent perception and control systems for mobile robots, specifically leveraging AI agents. My recent project involved designing and implementing a novel visual odometry system for autonomous exploration in complex, dynamic environments.
+
+My experience in visual odometry and AI agents for perception directly relates to your group's focus on vision-based navigation and autonomous navigation in unstructured environments. I am particularly keen to apply my skills to challenges in certifiably optimal state estimation or radar localization for self-driving vehicles, drawing parallels with your research into robust navigation solutions.
+
+I am very eager to contribute to your group's cutting-edge research and am writing to express my strong interest in pursuing a PhD (or research internship) under your supervision at the University of Toronto. I am currently preparing my application for the upcoming admission cycle.
+
+Thank you for your time and consideration. I have attached my resume, `tim_barfoot_resume.pdf`, for your review.
+
+[Your Name]
+[Your Email]
+[GitHub / Website]

@@ -1,0 +1,14 @@
+SUBJECT: PhD inquiry — Low-resource NER / Cross-lingual Transfer
+
+Dear Prof. Alice,
+
+Your recent work on cross-lingual transfer for low-resource NER directly
+aligns with my research on multilingual token classification using XLM-R.
+
+I would love to discuss potential PhD opportunities in your group.
+
+Please find my resume attached as a PDF.
+
+[Your Name]
+[Your Email]
+[GitHub / Website]

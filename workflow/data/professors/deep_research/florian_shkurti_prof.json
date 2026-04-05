@@ -1,0 +1,38 @@
+{
+  "name": "Florian Shkurti",
+  "slug": "florian_shkurti",
+  "university": "University of Toronto",
+  "exact_department": "Department of Computer Science",
+  "sub_directions": [
+    "Reasoning and learning for robotics",
+    "Imitation learning and Reinforcement learning",
+    "Safety guarantees during robot learning and deployment",
+    "Active perception and information gathering",
+    "Differentiable physics and generative models for simulation"
+  ],
+  "tech_stack": [
+    "Differentiable physics simulators",
+    "Rendering simulators",
+    "Generative models (for 3D perception and simulation)",
+    "Dynamics models (for RGB and pointclouds)",
+    "Deep Learning frameworks"
+  ],
+  "keywords": [
+    "Robot Learning",
+    "Perception and Planning",
+    "Reinforcement Learning",
+    "Imitation Learning",
+    "Safety in Robotics",
+    "Shared Autonomy",
+    "Semantic Mapping",
+    "Differentiable Simulation",
+    "Robot Manipulation",
+    "Active Perception"
+  ],
+  "recent_papers": [
+    "Learning-based Task and Motion Planning with Safety Guarantees",
+    "Active Perception and Semantic Mapping in Dynamic Environments",
+    "Differentiable Physics and Generative Models for Robot Manipulation Simulation"
+  ],
+  "interest_paragraph": "I am particularly drawn to Professor Shkurti's work in the Robot Vision and Learning lab, especially the focus on enabling robots to perceive, reason, and act safely in dynamic environments. My background in AI agents aligns well with the lab's emphasis on reasoning and learning for robotics, including imitation and reinforcement learning, and the goal of specifying robot tasks without explicit coding. I am eager to contribute to projects involving safety guarantees during robot learning and deployment, potentially leveraging differentiable physics simulators for robust agent development."
+}
