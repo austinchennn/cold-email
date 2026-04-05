@@ -1,3 +1,7 @@
+<p align="right">
+  <a href="README_CN.md">中文</a> | <strong>English</strong>
+</p>
+
 <p align="center">
   <img src="media/9e4decdd9a339a09d53083e4b1e750e9.jpg" width="200" alt="Cold Email Client Logo"/>
 </p>
@@ -176,4 +180,4 @@ python dashboard.py
 
 ## License
 
-MIT
+[PolyForm Noncommercial License 1.0.0](LICENSE) — free for personal and research use; **commercial use is not permitted**.
