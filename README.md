@@ -124,6 +124,57 @@ Add your resume template to `latex/resume_template/template.tex` with `%%PROJECT
 
 ---
 
+## Agent 0 — Chat Gateway
+
+Instead of filling out config files manually, you can talk to **Agent 0** in natural language. It acts as a conversational frontend that:
+
+- Chats with you to collect your profile (name, email, school, research domain, skills, etc.)
+- Understands free-form input — you can say anything, in any order
+- Automatically detects intent: new info, corrections, run commands, or small talk
+- Extracts and saves fields to `data/user_profile.json` in real time
+- Routes to the right workflow once your profile is complete
+
+**Example conversation:**
+
+```
+Agent 0 ▶  Hi! I’m your cold email assistant. Tell me about yourself.
+
+You     ▶  My name is Austin, I’m a CS undergrad at UofT interested in robot learning.
+
+Agent 0 ▶  Got it! What’s your email address?
+
+You     ▶  austin@mail.utoronto.ca, and I’m targeting a PhD in the US or Canada.
+
+Agent 0 ▶  What skills or tools do you use in your research?
+
+You     ▶  Python, PyTorch, ROS, and I have a paper on sim-to-real transfer.
+
+Agent 0 ▶  Profile complete! Ready to search for professors. Type “run” to start.
+```
+
+**Two ways to use Agent 0:**
+
+1. **Terminal** — run `python run_intake.py` for a plain text chat in your terminal
+2. **Dashboard** — run `python dashboard.py` for the full TUI with the chat window on the left and live agent panels on the right
+
+**Supported profile fields:**
+
+| Field | Description |
+|---|---|
+| `name` / `email` | Your contact info |
+| `current_school` / `current_degree` / `major` / `gpa` | Academic background |
+| `target_degree` | PhD / Master’s / Research Intern |
+| `research_domain` / `sub_interests` | e.g. “robot learning”, “NLP” |
+| `target_regions` / `target_universities` / `target_labs` | Geographic or school preferences |
+| `skills` | Programming languages, frameworks, tools |
+| `research_experience` / `publications` | Prior work |
+| `timeline` / `language_scores` | Application timeline, TOEFL/IELTS |
+| `max_professors` | How many professors to target per run |
+
+Once all required fields are filled, type **`run`**, **`start`**, or **`go`** to launch the pipeline.
+
+---
+
 ## Usage
 
 ### Full pipeline (interactive)

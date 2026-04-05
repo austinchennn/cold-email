@@ -1,1 +1,22 @@
 tests/
+
+# Secrets & environment
+.env
+*.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Data outputs & DB
+workflow/outputs/emails/
+workflow/outputs/tailored_resumes/
+workflow/data/professors/deep_research/
+workflow/data/professors/raw_list.json
+*.db
+
+# OAuth tokens & Google credentials
+token.json
+workflow/config/credentials.json
+workflow/config/credentials*.json

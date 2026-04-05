@@ -124,6 +124,57 @@ GMAIL_ENABLED=false            # 设为 true 以实际发送邮件
 
 ---
 
+## Agent 0 — 对话门户
+
+无需手动编辑任何配置文件——直接和 **Agent 0** 用自然语言对话即可。它作为整个流水线的对话入口，实现：
+
+- 通过路善对话采集你的个人信息（姓名、邮箕、学校、研究方向、技能等）
+- 支持自由输入，不限顺序、不限内容，中英文均可
+- 自动识别意图：新信息、修正、运行指令、闲聊
+- 实时提取并存储字段到 `data/user_profile.json`
+- 档案完成后自动路由到对应的工作流
+
+**对话示例：**
+
+```
+Agent 0 ▶  你好！我是你的冷邮件助手。先简单介绍一下自己吧。
+
+你   ▶  我叫 Austin，夜大CS本科，想申请机器人学习方向的PhD。
+
+Agent 0 ▶  明白！你的联系邮箕是？
+
+你   ▶  austin@mail.utoronto.ca，目标申请美国或加拿大。
+
+Agent 0 ▶  你有哪些相关技能或工具？
+
+你   ▶  Python、PyTorch、ROS，有一篇 sim-to-real 的论文。
+
+Agent 0 ▶  档案已完成！输入 “run” 即可启动流水线。
+```
+
+**两种使用方式：**
+
+1. **终端模式** — `python run_intake.py`，在终端中直接对话
+2. **仪表盘模式** — `python dashboard.py`，左侧为聊天窗口，右侧实时显示各 Agent 状态
+
+**可采集的字段：**
+
+| 字段 | 说明 |
+|---|---|
+| `name` / `email` | 姓名与联系邮箕 |
+| `current_school` / `current_degree` / `major` / `gpa` | 学历背景 |
+| `target_degree` | PhD / 硕士 / 科研实习 |
+| `research_domain` / `sub_interests` | 如“机器人学习”、“NLP” |
+| `target_regions` / `target_universities` / `target_labs` | 地区或院校偏好 |
+| `skills` | 编程语言、框架、工具 |
+| `research_experience` / `publications` | 科研经历与论文 |
+| `timeline` / `language_scores` | 申请时间节点、托福托雅成绩 |
+| `max_professors` | 每次目标搜索的教授数量 |
+
+所有必填字段完成后，输入 **`run`**、**`start`** 或 **`运行`** 即可启动流水线。
+
+---
+
 ## 使用方式
 
 ### 完整流水线（交互式，推荐）
