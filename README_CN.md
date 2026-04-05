@@ -3,14 +3,34 @@
 </p>
 
 <p align="center">
-  <img src="media/9e4decdd9a339a09d53083e4b1e750e9.jpg" width="200" alt="Cold Email Client Logo"/>
+  <img src="media/9e4decdd9a339a09d53083e4b1e750e9.jpg" width="180" alt="Cold Email Client Logo"/>
 </p>
 
 <h1 align="center">Cold Email Client</h1>
 
 <p align="center">
-  AI 驱动的多 Agent 流水线 — 自动发现目标教授、定制简历、发送个性化冷邮件，全流程自动化。
+  <em>AI 驱动的多 Agent 流水线，自动化教授冷邮件外展</em>
 </p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/python-3.10%2B-blue?style=flat-square&logo=python&logoColor=white" alt="Python"/>
+  <img src="https://img.shields.io/badge/LLM-GPT--4o%20%7C%20Gemini-blueviolet?style=flat-square&logo=openai&logoColor=white" alt="LLM"/>
+  <img src="https://img.shields.io/badge/agents-6%20pipeline-orange?style=flat-square" alt="Agents"/>
+  <img src="https://img.shields.io/badge/tests-131%20passing-brightgreen?style=flat-square&logo=pytest&logoColor=white" alt="Tests"/>
+  <img src="https://img.shields.io/badge/license-Noncommercial-red?style=flat-square" alt="License"/>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/search-Tavily%20%7C%20DuckDuckGo-teal?style=flat-square" alt="Search"/>
+  <img src="https://img.shields.io/badge/email-Gmail%20API-EA4335?style=flat-square&logo=gmail&logoColor=white" alt="Gmail"/>
+  <img src="https://img.shields.io/badge/resume-LaTeX-008080?style=flat-square&logo=latex&logoColor=white" alt="LaTeX"/>
+  <img src="https://img.shields.io/badge/TUI-Textual-1a1a2e?style=flat-square" alt="Textual"/>
+  <img src="https://img.shields.io/badge/NLP-TF--IDF%20%2B%20cosine-yellow?style=flat-square" alt="NLP"/>
+</p>
+
+---
+
+> 自动发现研究方向匹配的教授，为每位教授定制简历，并发送个性化冷邮件 — 全流程无需手动干预。
 
 ---
 
