@@ -56,6 +56,12 @@ A live terminal dashboard (built with [Textual](https://github.com/Textualize/te
 
 ---
 
+## Dashboard
+
+![Cold Email Workflow Dashboard](media/dashboard.png)
+
+---
+
 ## Features
 
 - **Automated professor discovery** via Tavily search API (falls back to DuckDuckGo)
