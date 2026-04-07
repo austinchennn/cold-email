@@ -27,8 +27,6 @@ import logging
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
-
 from agents.agent0_intake import Agent0Intake, build_search_context, PROFILE_PATH
 from agents.agent1_search  import Agent1Search
 from agents.agent2_research import Agent2Research

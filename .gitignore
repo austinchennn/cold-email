@@ -9,6 +9,11 @@ __pycache__/
 *.pyc
 *.pyo
 
+# Package build artifacts
+*.egg-info/
+dist/
+build/
+
 # Data outputs & DB
 workflow/outputs/emails/
 workflow/outputs/tailored_resumes/

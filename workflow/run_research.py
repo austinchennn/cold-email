@@ -31,9 +31,6 @@ import logging
 import sys
 from pathlib import Path
 
-# 确保包根在 sys.path
-sys.path.insert(0, str(Path(__file__).parent))
-
 from config.settings import MAX_PROFESSORS, PROFESSORS_DIR, DEEP_RESEARCH_DIR
 from agents.agent1_search   import Agent1Search
 from agents.agent2_research import Agent2Research

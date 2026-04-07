@@ -29,9 +29,6 @@ import logging
 import sys
 from pathlib import Path
 
-# Ensure the package root is on sys.path when invoked as `python main.py`
-sys.path.insert(0, str(Path(__file__).parent))
-
 from config.settings import MAX_PROFESSORS, TAILORED_RESUMES_DIR, EMAILS_DIR, GMAIL_ENABLED
 from agents.agent1_search   import Agent1Search
 from agents.agent2_research import Agent2Research

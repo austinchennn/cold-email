@@ -33,8 +33,6 @@ import logging
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
-
 from config.settings import (
     DEEP_RESEARCH_DIR, TAILORED_RESUMES_DIR, EMAILS_DIR, GMAIL_ENABLED,
 )
