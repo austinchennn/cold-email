@@ -78,7 +78,7 @@ A live terminal dashboard (built with [Textual](https://github.com/Textualize/te
 
 | Category | Library |
 |---|---|
-| LLM | `langchain-openai` (GPT-4o / Gemini) |
+| LLM | LangChain — `langchain-openai` + LCEL, Pydantic structured output (GPT-4o / Gemini) |
 | Web search | Tavily API, `duckduckgo-search` |
 | Scraping | `requests`, `beautifulsoup4` |
 | NLP | `scikit-learn` (TF-IDF + cosine similarity) |

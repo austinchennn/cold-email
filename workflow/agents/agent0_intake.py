@@ -42,8 +42,12 @@ import logging
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from langchain_core.exceptions import OutputParserException
+from langchain_core.output_parsers import JsonOutputParser, StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+
 from config.settings import DATA_DIR, MAX_PROFESSORS
-from skills.llm_client import call_llm_chat
+from skills.llm_client import get_chat_model, run_chain
 from skills.intent_router import classify_intent
 from skills.event_bus import bus, Event, EventType
 
@@ -150,6 +154,22 @@ class Agent0Intake:
         self._profile: Dict[str, Any] = self.load() or _blank_profile()
         self._history: List[Dict[str, str]] = []
 
+        # LCEL chains. The system prompt is rendered upstream and passed as a
+        # value, so its literal braces need no escaping.
+        self._reply_chain = (
+            ChatPromptTemplate.from_messages([
+                ("system", "{system}"),
+                MessagesPlaceholder("history"),
+            ])
+            | get_chat_model()
+            | StrOutputParser()
+        )
+        self._autofill_chain = (
+            ChatPromptTemplate.from_messages([("system", "{system}")])
+            | get_chat_model(json_mode=True)
+            | JsonOutputParser()
+        )
+
     # ── Profile persistence ───────────────────────────────────────────────────
 
     @staticmethod
@@ -220,17 +240,18 @@ class Agent0Intake:
             "只返回 JSON，key 是字段名，value 是推断值。列表用数组。"
         )
 
-        raw = call_llm_chat(
-            [{"role": "system", "content": prompt}],
-            json_mode=True,
-            agent_id=self.AGENT_ID,
-            step="auto_fill",
-        )
-
         try:
-            filled = json.loads(raw)
-        except json.JSONDecodeError:
-            logger.error(f"Auto-fill JSON parse failed: {raw[:300]}")
+            filled = run_chain(
+                self._autofill_chain,
+                {"system": prompt},
+                agent_id=self.AGENT_ID,
+                step="auto_fill",
+            )
+        except OutputParserException:
+            logger.error("Auto-fill JSON parse failed")
+            return {}
+
+        if not isinstance(filled, dict):
             return {}
 
         changed = self._merge_fields(filled)
@@ -419,18 +440,23 @@ class Agent0Intake:
     def _generate_reply(self) -> str:
         """Generate a conversational reply using full history."""
         system = self._build_system_prompt()
-        messages = [{"role": "system", "content": system}] + self._history
-        return call_llm_chat(messages, agent_id=self.AGENT_ID, step="chat_reply")
+        return run_chain(
+            self._reply_chain,
+            {"system": system, "history": self._history},
+            agent_id=self.AGENT_ID, step="chat_reply",
+        )
 
     def _generate_reply_with_context(self, instruction: str) -> str:
         """Generate a reply with a specific instruction appended."""
         system = self._build_system_prompt() + f"\n\n## 本轮特别指令\n{instruction}"
-        messages = [{"role": "system", "content": system}]
-        if self._history:
-            messages += self._history
-        else:
-            messages.append({"role": "user", "content": "(系统启动，请开始对话)"})
-        return call_llm_chat(messages, agent_id=self.AGENT_ID, step="interview_start")
+        history = self._history or [
+            {"role": "user", "content": "(系统启动，请开始对话)"}
+        ]
+        return run_chain(
+            self._reply_chain,
+            {"system": system, "history": history},
+            agent_id=self.AGENT_ID, step="interview_start",
+        )
 
     def _build_system_prompt(self) -> str:
         """Build the system prompt with current profile status."""

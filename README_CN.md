@@ -72,7 +72,7 @@ Cold Email Client 运行一条 5-Agent 顺序流水线：
 
 | 类别 | 库 |
 |---|---|
-| LLM | `langchain-openai`（GPT-4o / Gemini） |
+| LLM | LangChain — `langchain-openai` + LCEL，Pydantic 结构化输出（GPT-4o / Gemini） |
 | 网络搜索 | Tavily API、`duckduckgo-search` |
 | 网页抓取 | `requests`、`beautifulsoup4` |
 | NLP | `scikit-learn`（TF-IDF + 余弦相似度） |

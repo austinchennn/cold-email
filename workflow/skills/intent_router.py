@@ -14,11 +14,14 @@ Intents
   chat             — 闲聊 / 提问 / 不属于以上的任何内容
 """
 
-import json
 import logging
 from typing import Any, Dict
 
-from skills.llm_client import call_llm_chat
+from langchain_core.exceptions import OutputParserException
+from langchain_core.output_parsers import JsonOutputParser
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+
+from skills.llm_client import get_chat_model, run_chain
 from skills.event_bus import bus, Event, EventType
 
 logger = logging.getLogger(__name__)
@@ -90,6 +93,18 @@ Only include fields that the user ACTUALLY mentioned — do NOT hallucinate.
 """
 
 
+# LCEL chain: {system} + full conversation history → JSON dict.
+# json_mode keeps the model from wrapping the object in markdown fences.
+_INTENT_CHAIN = (
+    ChatPromptTemplate.from_messages([
+        ("system", "{system}"),
+        MessagesPlaceholder("history"),
+    ])
+    | get_chat_model(json_mode=True)
+    | JsonOutputParser()
+)
+
+
 def classify_intent(
     messages: list[Dict[str, str]],
     current_profile: Dict[str, Any],
@@ -120,24 +135,21 @@ def classify_intent(
 
     system = _INTENT_SYSTEM.replace("{profile_snapshot}", snapshot)
 
-    # Build message list: system + conversation history
-    llm_messages = [{"role": "system", "content": system}]
-    for m in messages:
-        if m["role"] != "system":
-            llm_messages.append(m)
-
-    raw = call_llm_chat(
-        llm_messages,
-        json_mode=True,
-        agent_id=0,
-        step="intent_classify",
-    )
+    history = [m for m in messages if m["role"] != "system"]
 
     try:
-        result = json.loads(raw)
-    except json.JSONDecodeError:
-        logger.error(f"Intent classification JSON parse failed: {raw[:300]}")
-        return {"intent": "chat", "fields": {}, "reply": raw[:200]}
+        result = run_chain(
+            _INTENT_CHAIN,
+            {"system": system, "history": history},
+            agent_id=0,
+            step="intent_classify",
+        )
+    except OutputParserException as exc:
+        logger.error(f"Intent classification JSON parse failed: {exc}")
+        return {"intent": "chat", "fields": {}, "reply": ""}
+
+    if not isinstance(result, dict):
+        result = {}
 
     # Validate intent
     intent = result.get("intent", "chat")

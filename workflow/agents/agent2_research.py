@@ -31,12 +31,28 @@ import logging
 import re
 from typing import Dict, List
 
+from pydantic import BaseModel, Field
+
 from config.settings import DEEP_RESEARCH_DIR
-from skills.llm_client import call_llm_json
+from skills.llm_client import call_llm_structured
 from skills.web_search import WebSearchSkill
 from skills.event_bus import bus, Event, EventType
 
 logger = logging.getLogger(__name__)
+
+
+class ProfessorResearch(BaseModel):
+    """Enriched research profile written to deep_research/{slug}_prof.json."""
+    name: str = ""
+    slug: str = ""                                            # snake_case filename stem
+    university: str = ""
+    exact_department: str = ""
+    sub_directions: List[str] = Field(default_factory=list)   # 3-5 specific sub-topics
+    tech_stack: List[str] = Field(default_factory=list)       # frameworks / tools
+    keywords: List[str] = Field(default_factory=list)         # 5-10 technical keywords
+    recent_papers: List[str] = Field(default_factory=list)    # 2-3 paper titles
+    interest_paragraph: str = ""                              # first-person, applicant voice
+    email: str = ""                                           # carried from Agent 1 (see run())
 
 _SYSTEM_PROMPT = """\
 You are a technical research analyst helping a PhD applicant understand a
@@ -90,13 +106,21 @@ class Agent2Research:
 
         # 2. LLM extraction
         user_prompt = self._build_user_prompt(professor, page_context, user_context)
-        data        = call_llm_json(_SYSTEM_PROMPT, user_prompt)
+        result      = call_llm_structured(
+            _SYSTEM_PROMPT, user_prompt, ProfessorResearch,
+            agent_id=self.AGENT_ID, step="LLM extraction",
+        )
+        data = result.model_dump()
 
         # 3. Ensure slug present
         if not data.get("slug"):
             data["slug"] = _make_slug(name)
 
-        # 4. Persist
+        # 4. Email is authoritative from Agent 1's raw_list (Agent 5 sends to it)
+        if professor.get("email"):
+            data["email"] = professor["email"]
+
+        # 5. Persist
         slug     = data["slug"]
         out_path = DEEP_RESEARCH_DIR / f"{slug}_prof.json"
         out_path.write_text(
