@@ -4,9 +4,11 @@
 
 ---
 
-## LLM：OpenAI API（兼容 Gemini）
+## LLM：LangChain（`langchain-openai`，兼容 Gemini）
 
-选 OpenAI API 而不是直接集成多个 SDK，核心原因是**接口标准化**。OpenAI 的 Chat Completions 格式已经成为事实上的行业标准，Gemini、Mistral、Together AI 等都提供兼容接口。这意味着整个项目只需要维护一套调用逻辑，切换模型只改一个环境变量，不动任何业务代码。
+LLM 调用统一走 LangChain 的 `ChatOpenAI`，核心原因是**接口标准化**。OpenAI 的 Chat Completions 格式已经成为事实上的行业标准，Gemini、Mistral、Together AI 等都提供兼容接口；用 LangChain 再包一层，则进一步把「消息格式、结构化输出、重试、回调」抽象成与厂商无关的统一 API。整个项目只需要维护一套调用逻辑，切换模型只改一个环境变量，不动任何业务代码。
+
+所有调用都收敛在 [`skills/llm_client.py`](workflow/skills/llm_client.py) 的 `call_llm` / `call_llm_chat` / `call_llm_json` 三个函数里——LangChain 的具体类型不会泄漏到 agent 代码中。设 `GEMINI_API_KEY` 时指向 Gemini 的 OpenAI 兼容端点，否则用 `OPENAI_API_KEY` 走 OpenAI；重试逻辑（429 长等待、连接错误退避）自己实现，因此构造时 `max_retries=0` 关掉 SDK 内置重试。
 
 另一个考量是 `json_mode`。这个 pipeline 大量依赖 LLM 返回结构化 JSON（教授列表、调研档案、意图识别结果），GPT-4o 的 JSON mode 相比 prompt engineering 要稳定得多——不会出现 markdown 代码块包裹、多余注释、格式漂移等问题。早期版本用纯 prompt 控制输出格式，调试成本很高，换成 json_mode 之后这类问题基本消失了。
 
