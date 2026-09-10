@@ -16,7 +16,7 @@
   <img src="https://img.shields.io/badge/python-3.10%2B-blue?style=flat-square&logo=python&logoColor=white" alt="Python"/>
   <img src="https://img.shields.io/badge/LLM-GPT--4o%20%7C%20Gemini-blueviolet?style=flat-square&logo=openai&logoColor=white" alt="LLM"/>
   <img src="https://img.shields.io/badge/agents-6%20pipeline-orange?style=flat-square" alt="Agents"/>
-  <img src="https://img.shields.io/badge/tests-131%20passing-brightgreen?style=flat-square&logo=pytest&logoColor=white" alt="Tests"/>
+  <img src="https://img.shields.io/badge/tests-168%20passing-brightgreen?style=flat-square&logo=pytest&logoColor=white" alt="Tests"/>
   <img src="https://img.shields.io/badge/license-Noncommercial-red?style=flat-square" alt="License"/>
 </p>
 
@@ -109,7 +109,7 @@ cold-email/
 │   ├── run_email.py     # Email only (Agents 3–5)
 │   ├── run_intake.py    # Interview + research (Agent 0 → 1 → 2)
 │   └── dashboard.py     # Live TUI dashboard
-└── tests/               # Unit + integration tests (131 tests)
+└── tests/               # Unit + integration tests (168 passing)
 ```
 
 ---

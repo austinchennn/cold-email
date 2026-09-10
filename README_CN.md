@@ -16,7 +16,7 @@
   <img src="https://img.shields.io/badge/python-3.10%2B-blue?style=flat-square&logo=python&logoColor=white" alt="Python"/>
   <img src="https://img.shields.io/badge/LLM-GPT--4o%20%7C%20Gemini-blueviolet?style=flat-square&logo=openai&logoColor=white" alt="LLM"/>
   <img src="https://img.shields.io/badge/agents-6%20pipeline-orange?style=flat-square" alt="Agents"/>
-  <img src="https://img.shields.io/badge/tests-131%20passing-brightgreen?style=flat-square&logo=pytest&logoColor=white" alt="Tests"/>
+  <img src="https://img.shields.io/badge/tests-168%20passing-brightgreen?style=flat-square&logo=pytest&logoColor=white" alt="Tests"/>
   <img src="https://img.shields.io/badge/license-Noncommercial-red?style=flat-square" alt="License"/>
 </p>
 
@@ -103,7 +103,7 @@ cold-email/
 │   ├── run_email.py     # 仅邮件（Agent 3–5）
 │   ├── run_intake.py    # 问答采集 + 调研（Agent 0 → 1 → 2）
 │   └── dashboard.py     # 实时 TUI 仪表盘
-└── tests/               # 单元 + 集成测试（131 个）
+└── tests/               # 单元 + 集成测试（168 个）
 ```
 
 ---
@@ -151,7 +151,7 @@ GMAIL_ENABLED=false            # 设为 true 以实际发送邮件
 
 无需手动编辑任何配置文件——直接和 **Agent 0** 用自然语言对话即可。它作为整个流水线的对话入口，实现：
 
-- 通过路善对话采集你的个人信息（姓名、邮箕、学校、研究方向、技能等）
+- 通过对话采集你的个人信息（姓名、邮箱、学校、研究方向、技能等）
 - 支持自由输入，不限顺序、不限内容，中英文均可
 - 自动识别意图：新信息、修正、运行指令、闲聊
 - 实时提取并存储字段到 `data/user_profile.json`
@@ -164,7 +164,7 @@ Agent 0 ▶  你好！我是你的冷邮件助手。先简单介绍一下自己�
 
 你   ▶  我叫 Austin，夜大CS本科，想申请机器人学习方向的PhD。
 
-Agent 0 ▶  明白！你的联系邮箕是？
+Agent 0 ▶  明白！你的联系邮箱是？
 
 你   ▶  austin@mail.utoronto.ca，目标申请美国或加拿大。
 
@@ -184,7 +184,7 @@ Agent 0 ▶  档案已完成！输入 “run” 即可启动流水线。
 
 | 字段 | 说明 |
 |---|---|
-| `name` / `email` | 姓名与联系邮箕 |
+| `name` / `email` | 姓名与联系邮箱 |
 | `current_school` / `current_degree` / `major` / `gpa` | 学历背景 |
 | `target_degree` | PhD / 硕士 / 科研实习 |
 | `research_domain` / `sub_interests` | 如“机器人学习”、“NLP” |
