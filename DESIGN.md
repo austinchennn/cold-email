@@ -25,6 +25,18 @@ Dashboard 事件（`LLM_CALL` / `LLM_RESPONSE`）以前在封装函数里手动 
 
 ---
 
+## 编排：LangGraph `StateGraph`
+
+之前 pipeline 的「搜索 → 逐个教授跑 Agent 2-5」这段循环，在 `main.py`、`run_research.py`、`run_email.py`、`run_intake.py` 和 `dashboard.py` 里各写了一遍，逻辑还各有细微出入（错误处理、事件发送）。改成一张 LangGraph 图之后，五个入口都调 [`graph.run_pipeline(mode, ...)`](workflow/graph/pipeline.py)，只有一份编排逻辑。
+
+图的形状是**扇出**：`search` 节点产出教授列表，然后用 LangGraph 的 `Send` 给每位教授起一个独立分支跑后续 agent。每个分支只写 `results` 这一个键（用 `operator.add` 归约成列表拼接），所以分支之间永远不会在共享 state 上打架。三种模式（`full` / `research` / `email`）复用同一批节点函数，只是入口节点和分支节点不同——`build_pipeline(mode)` 按表装配。
+
+Agent 类本身没动，它们就是节点的实现。选 LangGraph 而不是继续手写循环，一是去重，二是拿到统一的 state 模型、扇出/归约原语和 streaming 能力（dashboard 之后可以直接消费图的事件流）。
+
+Agent 0 的采集对话也拆成了一张小图 [`graph/intake_graph.py`](workflow/graph/intake_graph.py)：`classify → apply_fields →（回复够长？）→ generate_reply → finalize`。每收到一条用户消息跑一次，把「意图识别 / 字段合并 / 兜底回复」这几步显式化，`Agent0Intake` 只保留 profile / history 状态和 LCEL 链。stdin / 聊天框仍由调用方（CLI 循环或 dashboard）持有，没有引入 `interrupt`，交互 UX 不变。
+
+---
+
 ## 网络搜索：Tavily API + DuckDuckGo fallback
 
 搜索这里有一个根本问题：直接 scrape Google/Bing 会被反爬封掉，而且维护成本极高。

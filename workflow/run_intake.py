@@ -28,8 +28,7 @@ import sys
 from pathlib import Path
 
 from agents.agent0_intake import Agent0Intake, build_search_context, PROFILE_PATH
-from agents.agent1_search  import Agent1Search
-from agents.agent2_research import Agent2Research
+from graph import run_pipeline
 from config.settings import MAX_PROFESSORS, PROFESSORS_DIR, DEEP_RESEARCH_DIR
 
 logging.basicConfig(
@@ -74,10 +73,7 @@ def main() -> None:
         else:
             print(f"\n  📂 复用已有档案: {PROFILE_PATH}")
             intake._print_profile()
-            confirm = input("\n  继续使用此档案？(Y/n): ").strip().lower()
-            if confirm in ("n", "no"):
-                result = intake.run_interactive()
-                profile = result["profile"]
+            print("\n  将直接使用此档案继续，无需重新采集。\n")
     else:
         result = intake.run_interactive()
         action = result.get("_action", "quit")
@@ -99,9 +95,8 @@ def main() -> None:
     max_prof = args.max or profile.get("max_professors", MAX_PROFESSORS)
     search_context = build_search_context(profile)
 
-    # ── Agent 1 ───────────────────────────────────────────────────────────────
     print(f"\n{_SEP}")
-    print(f"  AGENT 1 — 教授发现")
+    print(f"  AGENT 1 + 2 — 教授发现 & 深度调研  (LangGraph)")
     print(f"  领域: {domain}   最多: {max_prof} 位")
     if profile.get("target_regions"):
         print(f"  地区: {', '.join(profile['target_regions'])}")
@@ -109,38 +104,20 @@ def main() -> None:
         print(f"  目标院校: {', '.join(profile['target_universities'])}")
     print(_SEP)
 
-    agent1 = Agent1Search()
-    professors = agent1.run(domain, max_count=max_prof,
-                            user_context=search_context)
+    all_research: list[dict] = run_pipeline(
+        "research", domain=domain, max_professors=max_prof,
+        user_context=search_context,
+    )
 
-    if not professors:
+    if not all_research:
         logger.error("未找到任何教授，请检查网络或 API Key。")
         return
 
-    print(f"  ✓ 发现 {len(professors)} 位教授\n")
-
-    # ── Agent 2 ───────────────────────────────────────────────────────────────
-    print(f"{_SEP}")
-    print(f"  AGENT 2 — 深度调研")
-    print(_SEP)
-
-    all_research: list[dict] = []
-
-    for idx, prof in enumerate(professors, 1):
-        name = prof.get("name", "Unknown")
-        univ = prof.get("university", "")
-        dept = prof.get("department", "")
-        print(f"\n  [{idx:02d}/{len(professors):02d}]  {name}")
-        print(f"          {univ}  ·  {dept}")
-
-        try:
-            research = Agent2Research().run(prof, user_context=search_context)
-            all_research.append(research)
-            slug = research.get("slug", "?")
-            print(f"  ✓ 调研完成 → deep_research/{slug}_prof.json")
-        except Exception as exc:
-            logger.error(f"Agent2 处理 {name} 时出错: {exc}")
-            all_research.append({"name": name, "slug": "", "_error": str(exc), **prof})
+    for r in all_research:
+        if r.get("_error"):
+            print(f"  ⚠ {r.get('name', '?')} 调研出错: {r['_error']}")
+        else:
+            print(f"  ✓ {r.get('name', '?')} → deep_research/{r.get('slug', '?')}_prof.json")
 
     # ── 汇总 ──────────────────────────────────────────────────────────────────
     out_path = Path(args.out) if args.out else None

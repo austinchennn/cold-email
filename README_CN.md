@@ -73,6 +73,7 @@ Cold Email Client 运行一条 5-Agent 顺序流水线：
 | 类别 | 库 |
 |---|---|
 | LLM | LangChain — `langchain-openai` + LCEL，Pydantic 结构化输出（GPT-4o / Gemini） |
+| 编排 | LangGraph `StateGraph` — 扇出式流水线（`workflow/graph/`） |
 | 网络搜索 | Tavily API、`duckduckgo-search` |
 | 网页抓取 | `requests`、`beautifulsoup4` |
 | NLP | `scikit-learn`（TF-IDF + 余弦相似度） |
@@ -89,7 +90,8 @@ Cold Email Client 运行一条 5-Agent 顺序流水线：
 ```
 cold-email/
 ├── workflow/
-│   ├── agents/          # Agent 0–5 流水线逻辑
+│   ├── agents/          # Agent 0–5 节点实现
+│   ├── graph/           # LangGraph 流水线 + 采集状态机
 │   ├── skills/          # 可复用组件（LLM、搜索、Gmail 等）
 │   ├── config/          # 配置与领域设置
 │   ├── data/            # 教授档案与用户档案
