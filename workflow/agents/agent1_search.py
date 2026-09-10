@@ -28,12 +28,29 @@ import json
 import logging
 from typing import Dict, List
 
+from pydantic import BaseModel, Field
+
 from config.settings import PROFESSORS_DIR, MAX_PROFESSORS
-from skills.llm_client import call_llm_json
+from skills.llm_client import call_llm_structured
 from skills.web_search import WebSearchSkill
 from skills.event_bus import bus, Event, EventType
 
 logger = logging.getLogger(__name__)
+
+
+class ProfessorEntry(BaseModel):
+    """One professor row in raw_list.json."""
+    name: str = ""
+    email: str = ""          # institutional email, "" if unknown
+    university: str = ""
+    department: str = ""
+    research_areas: List[str] = Field(default_factory=list)  # 2-4 sub-directions
+    lab_url: str = ""        # "" if unknown
+    profile_url: str = ""    # "" if unknown
+
+
+class ProfessorList(BaseModel):
+    professors: List[ProfessorEntry] = Field(default_factory=list)
 
 _SYSTEM_PROMPT = """\
 You are a research assistant helping a student find professors to cold-email
@@ -91,10 +108,12 @@ class Agent1Search:
             system_prompt = _SYSTEM_PROMPT.format(max_count=max_count)
             user_prompt   = self._build_user_prompt(domain, search_context,
                                                      max_count, user_context)
-            data          = call_llm_json(system_prompt, user_prompt,
-                                          agent_id=self.AGENT_ID, step="LLM extraction")
+            result        = call_llm_structured(
+                system_prompt, user_prompt, ProfessorList,
+                agent_id=self.AGENT_ID, step="LLM extraction",
+            )
 
-            professors: List[Dict] = data.get("professors", [])
+            professors: List[Dict] = [p.model_dump() for p in result.professors]
             if not professors:
                 logger.warning("Agent1: LLM returned an empty professor list.")
 

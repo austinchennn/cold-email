@@ -36,14 +36,15 @@
 
 ## Overview
 
-Cold Email Client runs a 5-agent sequential workflow:
+Cold Email Client runs a 5-agent pipeline, orchestrated by LangGraph — Agent 1
+discovers the professors, then a fan-out branch runs Agents 2–5 for each one:
 
 ```
 Research Domain (user input)
         ↓
 [Agent 1] Web Search + LLM  →  professor list
-        ↓
-[Agent 2] Scrape + LLM      →  deep research profile (per professor)
+        ↓                       ┈┈ fan out per professor ┈┈
+[Agent 2] Scrape + LLM      →  deep research profile
         ↓
 [Agent 3] TF-IDF + LLM      →  tailored LaTeX resume
         ↓
@@ -78,7 +79,8 @@ A live terminal dashboard (built with [Textual](https://github.com/Textualize/te
 
 | Category | Library |
 |---|---|
-| LLM | `langchain-openai` (GPT-4o / Gemini) |
+| LLM | LangChain — `langchain-openai` + LCEL, Pydantic structured output (GPT-4o / Gemini) |
+| Orchestration | LangGraph `StateGraph` — fan-out pipeline (`workflow/graph/`) |
 | Web search | Tavily API, `duckduckgo-search` |
 | Scraping | `requests`, `beautifulsoup4` |
 | NLP | `scikit-learn` (TF-IDF + cosine similarity) |
@@ -95,7 +97,8 @@ A live terminal dashboard (built with [Textual](https://github.com/Textualize/te
 ```
 cold-email/
 ├── workflow/
-│   ├── agents/          # Agent 0–5 pipeline logic
+│   ├── agents/          # Agent 0–5 node implementations
+│   ├── graph/           # LangGraph pipeline + intake state machine
 │   ├── skills/          # Reusable components (LLM, search, Gmail, etc.)
 │   ├── config/          # Settings and domain config
 │   ├── data/            # Professor profiles and user profile

@@ -36,14 +36,15 @@
 
 ## 项目概览
 
-Cold Email Client 运行一条 5-Agent 顺序流水线：
+Cold Email Client 运行一条 5-Agent 流水线，由 LangGraph 编排 —— Agent 1 先发现教授，
+然后对每位教授扇出一个分支跑 Agent 2–5：
 
 ```
 研究方向（用户输入）
         ↓
 [Agent 1] 网络搜索 + LLM  →  教授列表
-        ↓
-[Agent 2] 抓取 + LLM      →  每位教授的深度调研档案
+        ↓                     ┈┈ 按教授扇出 ┈┈
+[Agent 2] 抓取 + LLM      →  深度调研档案
         ↓
 [Agent 3] TF-IDF + LLM    →  定制 LaTeX 简历
         ↓
@@ -72,7 +73,8 @@ Cold Email Client 运行一条 5-Agent 顺序流水线：
 
 | 类别 | 库 |
 |---|---|
-| LLM | `langchain-openai`（GPT-4o / Gemini） |
+| LLM | LangChain — `langchain-openai` + LCEL，Pydantic 结构化输出（GPT-4o / Gemini） |
+| 编排 | LangGraph `StateGraph` — 扇出式流水线（`workflow/graph/`） |
 | 网络搜索 | Tavily API、`duckduckgo-search` |
 | 网页抓取 | `requests`、`beautifulsoup4` |
 | NLP | `scikit-learn`（TF-IDF + 余弦相似度） |
@@ -89,7 +91,8 @@ Cold Email Client 运行一条 5-Agent 顺序流水线：
 ```
 cold-email/
 ├── workflow/
-│   ├── agents/          # Agent 0–5 流水线逻辑
+│   ├── agents/          # Agent 0–5 节点实现
+│   ├── graph/           # LangGraph 流水线 + 采集状态机
 │   ├── skills/          # 可复用组件（LLM、搜索、Gmail 等）
 │   ├── config/          # 配置与领域设置
 │   ├── data/            # 教授档案与用户档案

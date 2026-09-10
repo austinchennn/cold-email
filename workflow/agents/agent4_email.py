@@ -11,8 +11,11 @@ import logging
 from pathlib import Path
 from typing import Dict
 
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+
 from config.settings import EMAILS_DIR
-from skills.llm_client import call_llm
+from skills.llm_client import get_chat_model, run_chain
 from skills.event_bus import bus, Event, EventType
 
 logger = logging.getLogger(__name__)
@@ -62,6 +65,14 @@ class Agent4Email:
 
     AGENT_ID = 4
 
+    def __init__(self):
+        # LCEL chain: fully-rendered prompts in, email text out.
+        self._chain = (
+            ChatPromptTemplate.from_messages([("system", "{system}"), ("human", "{user}")])
+            | get_chat_model(temperature=0.55)
+            | StrOutputParser()
+        )
+
     def run(self, professor_research: Dict, resume_path: str) -> str:
         """
         Parameters
@@ -85,8 +96,11 @@ class Agent4Email:
 
             bus.post(Event(EventType.AGENT_STEP, self.AGENT_ID,
                            {"step": "Generate cold email (LLM)"}))
-            email_text = call_llm(_SYSTEM_PROMPT, user_prompt, temperature=0.55,
-                                  agent_id=self.AGENT_ID, step="Generate cold email")
+            email_text = run_chain(
+                self._chain,
+                {"system": _SYSTEM_PROMPT, "user": user_prompt},
+                agent_id=self.AGENT_ID, step="Generate cold email",
+            )
 
             bus.post(Event(EventType.AGENT_STEP, self.AGENT_ID,
                            {"step": "Save email .txt"}))

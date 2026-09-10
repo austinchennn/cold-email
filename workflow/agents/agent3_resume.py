@@ -19,8 +19,11 @@ import re
 from pathlib import Path
 from typing import Dict, List
 
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+
 from config.settings import RESUME_TEMPLATE_DIR, TAILORED_RESUMES_DIR, TOP_K_PROJECTS
-from skills.llm_client import call_llm
+from skills.llm_client import get_chat_model, run_chain
 from skills.project_matcher import ProjectMatcherSkill
 from skills.latex_utils import LatexUtils
 from skills.event_bus import bus, Event, EventType
@@ -58,6 +61,14 @@ class Agent3Resume:
     def __init__(self):
         self.matcher = ProjectMatcherSkill()
         self.latex   = LatexUtils()
+        # LCEL chain: fully-rendered prompts in, raw LaTeX string out.
+        # System/user text is passed as values (not templates) so the LaTeX
+        # braces in the prompt need no escaping.
+        self._chain = (
+            ChatPromptTemplate.from_messages([("system", "{system}"), ("human", "{user}")])
+            | get_chat_model(temperature=0.35)
+            | StrOutputParser()
+        )
 
     def run(self, professor_research: Dict) -> str:
         """
@@ -130,8 +141,11 @@ class Agent3Resume:
             "Rewrite the projects as LaTeX resume blocks targeting this professor's focus."
         )
 
-        latex_output = call_llm(_SYSTEM_PROMPT, user_prompt, temperature=0.35,
-                                 agent_id=self.AGENT_ID, step="LLM rewrite bullets")
+        latex_output = run_chain(
+            self._chain,
+            {"system": _SYSTEM_PROMPT, "user": user_prompt},
+            agent_id=self.AGENT_ID, step="LLM rewrite bullets",
+        )
 
         # Projects may be returned separated by the separator or just blank lines
         raw_blocks = re.split(

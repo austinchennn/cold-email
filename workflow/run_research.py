@@ -32,8 +32,7 @@ import sys
 from pathlib import Path
 
 from config.settings import MAX_PROFESSORS, PROFESSORS_DIR, DEEP_RESEARCH_DIR
-from agents.agent1_search   import Agent1Search
-from agents.agent2_research import Agent2Research
+from graph import run_pipeline
 
 logging.basicConfig(
     level=logging.INFO,
@@ -62,43 +61,25 @@ def run_research(domain: str, max_professors: int = MAX_PROFESSORS,
     list of research dicts (Agent2 输出格式)
     """
 
-    # ── Agent 1 ──────────────────────────────────────────────────────────────
+    # ── Agent 1 + Agent 2 via the LangGraph pipeline ─────────────────────────
     print(f"\n{_SEP}")
-    print(f"  AGENT 1 — 教授发现")
+    print(f"  AGENT 1 + 2 — 教授发现 & 深度调研  (LangGraph)")
     print(f"  领域: {domain}   最多: {max_professors} 位")
     print(_SEP)
 
-    professors = Agent1Search().run(domain, max_count=max_professors)
+    all_research: list[dict] = run_pipeline(
+        "research", domain=domain, max_professors=max_professors
+    )
 
-    if not professors:
+    if not all_research:
         logger.error("未找到任何教授，请检查网络或 API Key。")
         return []
 
-    print(f"  ✓ 发现 {len(professors)} 位教授\n")
-
-    # ── Agent 2 ──────────────────────────────────────────────────────────────
-    print(f"{_SEP}")
-    print(f"  AGENT 2 — 深度调研")
-    print(_SEP)
-
-    all_research: list[dict] = []
-
-    for idx, prof in enumerate(professors, 1):
-        name = prof.get("name", "Unknown")
-        univ = prof.get("university", "")
-        dept = prof.get("department", "")
-        print(f"\n  [{idx:02d}/{len(professors):02d}]  {name}")
-        print(f"          {univ}  ·  {dept}")
-
-        try:
-            research = Agent2Research().run(prof)
-            all_research.append(research)
-            slug = research.get("slug", "?")
-            print(f"  ✓ 调研完成 → deep_research/{slug}_prof.json")
-        except Exception as exc:
-            logger.error(f"Agent2 处理 {name} 时出错: {exc}")
-            # 保留基础信息，不中断后续
-            all_research.append({"name": name, "slug": "", "_error": str(exc), **prof})
+    for r in all_research:
+        if r.get("_error"):
+            print(f"  ⚠ {r.get('name', '?')} 调研出错: {r['_error']}")
+        else:
+            print(f"  ✓ {r.get('name', '?')} → deep_research/{r.get('slug', '?')}_prof.json")
 
     # ── 汇总输出 ──────────────────────────────────────────────────────────────
     if out_path:

@@ -1,39 +1,40 @@
 """
-Thin wrapper around a LangChain chat model.
+LangChain chat-model access layer.
 
-All agents and skills call call_llm() / call_llm_chat() / call_llm_json()
-instead of touching LangChain directly, so model, retry, and JSON-mode logic
-live in one place.
+Everything the agents and skills need to talk to an LLM lives here:
 
-Backend: langchain-openai's ChatOpenAI, pointed at the OpenAI API or — if
-GEMINI_API_KEY is set — at Gemini's OpenAI-compatible endpoint. The public
-function signatures are unchanged from the previous raw-SDK implementation.
+  get_chat_model()      → a configured, cached ChatOpenAI (build your own LCEL chain)
+  run_chain()           → invoke any Runnable with the shared retry loop + dashboard events
+  call_llm()            → one-shot system+user prompt, returns str
+  call_llm_chat()       → multi-turn message list, returns str
+  call_llm_json()       → call_llm in JSON mode, returns parsed dict
+  call_llm_structured() → returns a validated Pydantic model via with_structured_output()
+
+Backend: langchain-openai's ChatOpenAI, pointed at the OpenAI API or — when
+GEMINI_API_KEY is set — at Gemini's OpenAI-compatible endpoint. Retry logic
+(429 long-wait, connection backoff) is implemented here, so the models are
+built with max_retries=0.
 """
 
 import json
 import time
 import logging
-import warnings
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar
 
-# langchain-core still imports pydantic.v1 shims, which warn loudly on
-# Python 3.14+. We don't touch that code path — silence just this warning.
-warnings.filterwarnings(
-    "ignore",
-    message="Core Pydantic V1 functionality isn't compatible",
-    category=UserWarning,
-)
-
+from langchain_core.runnables import Runnable
 from langchain_openai import ChatOpenAI
+from pydantic import BaseModel
 from openai import RateLimitError, APIConnectionError, APIStatusError
 
 from config.settings import OPENAI_API_KEY, LLM_MODEL, LLM_TEMPERATURE, MAX_RETRIES
 from config.settings import GEMINI_API_KEY
-from skills.event_bus import bus, Event, EventType
+from skills.llm_events import BusCallbackHandler
 
 logger = logging.getLogger(__name__)
 
 _GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
+
+TModel = TypeVar("TModel", bound=BaseModel)
 
 # ChatOpenAI instances are cached by (model, temperature, json_mode) so we
 # reuse the underlying HTTP client across calls.
@@ -74,6 +75,21 @@ def _get_model(model: str, temperature: float, json_mode: bool) -> ChatOpenAI:
     return chat_model
 
 
+def get_chat_model(
+    *,
+    model: Optional[str] = None,
+    temperature: Optional[float] = None,
+    json_mode: bool = False,
+) -> ChatOpenAI:
+    """Return a cached ChatOpenAI. Compose it into an LCEL chain, then hand the
+    chain to run_chain() so it gets the shared retry loop and dashboard events."""
+    return _get_model(
+        model or LLM_MODEL,
+        temperature if temperature is not None else LLM_TEMPERATURE,
+        json_mode,
+    )
+
+
 def _content_to_str(content: Any) -> str:
     """Coerce a LangChain message .content (str or list of blocks) to a string."""
     if isinstance(content, str):
@@ -89,49 +105,28 @@ def _content_to_str(content: Any) -> str:
     return str(content or "")
 
 
-def _run(
-    messages: List[Dict[str, str]],
+def run_chain(
+    chain: Runnable,
+    chain_input: Any,
     *,
-    json_mode: bool,
-    model: Optional[str],
-    temperature: Optional[float],
-    agent_id: int,
-    step: str,
-) -> str:
-    """Shared execution path for call_llm() and call_llm_chat()."""
-    model_name = model or LLM_MODEL
-    temp = temperature if temperature is not None else LLM_TEMPERATURE
-    chat_model = _get_model(model_name, temp, json_mode)
+    agent_id: int = 0,
+    step: str = "",
+) -> Any:
+    """
+    Invoke any LCEL Runnable, retrying transient API failures and posting
+    LLM_CALL / LLM_RESPONSE events for the dashboard.
 
-    last_user = ""
-    for m in reversed(messages):
-        if m["role"] == "user":
-            last_user = m["content"][:800]
-            break
-    system = ""
-    for m in messages:
-        if m["role"] == "system":
-            system = m["content"][:800]
-            break
-
-    bus.post(Event(
-        type=EventType.LLM_CALL,
-        agent_id=agent_id,
-        data={"step": step, "system": system, "user": last_user, "model": model_name},
-    ))
+    Retry policy (unchanged from the raw-SDK version):
+      - RateLimitError      → wait 60s (Gemini free tier) or 2**attempt, then retry
+      - APIConnectionError  → wait 2s and retry, re-raise on the last attempt
+      - APIStatusError      → re-raise immediately
+    """
+    config = {"callbacks": [BusCallbackHandler(agent_id, step)]}
 
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            response = chat_model.invoke(messages)
-            content = _content_to_str(response.content)
-            bus.post(Event(
-                type=EventType.LLM_RESPONSE,
-                agent_id=agent_id,
-                data={"step": step, "response": content[:2000]},
-            ))
-            return content
+            return chain.invoke(chain_input, config=config)
         except RateLimitError:
-            # Gemini free tier needs longer waits; use 60s base for 429s
             wait = 60 if GEMINI_API_KEY else 2 ** attempt
             logger.warning(
                 f"Rate limited — retrying in {wait}s (attempt {attempt}/{MAX_RETRIES})"
@@ -147,6 +142,23 @@ def _run(
             raise
 
     raise RuntimeError("LLM call failed after all retries.")
+
+
+def _run(
+    messages: List[Dict[str, str]],
+    *,
+    json_mode: bool,
+    model: Optional[str],
+    temperature: Optional[float],
+    agent_id: int,
+    step: str,
+) -> str:
+    """Shared execution path for call_llm() and call_llm_chat()."""
+    chat_model = get_chat_model(
+        model=model, temperature=temperature, json_mode=json_mode
+    )
+    reply = run_chain(chat_model, messages, agent_id=agent_id, step=step)
+    return _content_to_str(reply.content)
 
 
 def call_llm(
@@ -224,3 +236,31 @@ def call_llm_json(
             f"Failed to parse LLM JSON output: {exc}\nRaw output:\n{raw[:500]}"
         )
         raise
+
+
+def call_llm_structured(
+    system_prompt: str,
+    user_prompt: str,
+    schema: Type[TModel],
+    *,
+    model: Optional[str] = None,
+    temperature: Optional[float] = None,
+    agent_id: int = 0,
+    step: str = "",
+) -> TModel:
+    """
+    Ask the model to fill in `schema` (a Pydantic model) and return a validated
+    instance. Uses ChatOpenAI.with_structured_output() under the hood, so the
+    provider enforces the JSON schema instead of relying on prompt wording.
+    """
+    chat_model = get_chat_model(model=model, temperature=temperature)
+    chain = chat_model.with_structured_output(schema)
+    return run_chain(
+        chain,
+        [
+            {"role": "system", "content": system_prompt},
+            {"role": "user",   "content": user_prompt},
+        ],
+        agent_id=agent_id,
+        step=step,
+    )

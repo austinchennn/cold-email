@@ -19,6 +19,7 @@ from typing import Dict, List, Optional
 
 import requests
 from bs4 import BeautifulSoup
+from langchain_core.tools import StructuredTool
 
 from config.settings import TAVILY_API_KEY, REQUEST_TIMEOUT, MAX_WEBPAGE_CHARS
 
@@ -117,6 +118,32 @@ class WebSearchSkill:
         except Exception as exc:
             logger.warning(f"DuckDuckGo search failed: {exc}")
             return []
+
+    # ── LangChain tools ───────────────────────────────────────────────────────
+
+    def as_tools(self) -> List[StructuredTool]:
+        """
+        Expose this skill as LangChain tools, for use by tool-calling agents
+        (LangGraph, Tier C). Business code can keep calling the methods directly.
+        """
+        return [
+            StructuredTool.from_function(
+                func=lambda query, num_results=5: self.search(query, num_results),
+                name="web_search",
+                description=(
+                    "Search the web for a query. Returns a list of "
+                    "{title, url, snippet} dicts."
+                ),
+            ),
+            StructuredTool.from_function(
+                func=lambda url: self.fetch_page(url),
+                name="fetch_page",
+                description=(
+                    "Fetch a single URL and return its cleaned plain-text "
+                    "content (empty string on failure)."
+                ),
+            ),
+        ]
 
     # ── HTML Cleaning ──────────────────────────────────────────────────────────
 

@@ -8,11 +8,32 @@
 
 LLM 调用统一走 LangChain 的 `ChatOpenAI`，核心原因是**接口标准化**。OpenAI 的 Chat Completions 格式已经成为事实上的行业标准，Gemini、Mistral、Together AI 等都提供兼容接口；用 LangChain 再包一层，则进一步把「消息格式、结构化输出、重试、回调」抽象成与厂商无关的统一 API。整个项目只需要维护一套调用逻辑，切换模型只改一个环境变量，不动任何业务代码。
 
-所有调用都收敛在 [`skills/llm_client.py`](workflow/skills/llm_client.py) 的 `call_llm` / `call_llm_chat` / `call_llm_json` 三个函数里——LangChain 的具体类型不会泄漏到 agent 代码中。设 `GEMINI_API_KEY` 时指向 Gemini 的 OpenAI 兼容端点，否则用 `OPENAI_API_KEY` 走 OpenAI；重试逻辑（429 长等待、连接错误退避）自己实现，因此构造时 `max_retries=0` 关掉 SDK 内置重试。
+所有模型访问都收敛在 [`skills/llm_client.py`](workflow/skills/llm_client.py)：
 
-另一个考量是 `json_mode`。这个 pipeline 大量依赖 LLM 返回结构化 JSON（教授列表、调研档案、意图识别结果），GPT-4o 的 JSON mode 相比 prompt engineering 要稳定得多——不会出现 markdown 代码块包裹、多余注释、格式漂移等问题。早期版本用纯 prompt 控制输出格式，调试成本很高，换成 json_mode 之后这类问题基本消失了。
+- `get_chat_model()` — 拿到一个按 `(model, temperature, json_mode)` 缓存的 `ChatOpenAI`，agent 自己用 LCEL 组链（`ChatPromptTemplate | model | parser`）。
+- `run_chain()` — 把任意 `Runnable` 套上共享的重试循环 + dashboard 事件回调后再 `invoke`。重试逻辑（429 长等待、连接错误退避）自己实现，因此构造时 `max_retries=0` 关掉 SDK 内置重试。
+- `call_llm` / `call_llm_chat` / `call_llm_json` — 一次性 system+user / 多轮 / JSON 的便捷封装，内部也走 `run_chain`。
+- `call_llm_structured(system, user, Schema)` — 用 `ChatOpenAI.with_structured_output()` 让**服务端按 JSON Schema 校验**，返回校验过的 Pydantic 实例。
+
+设 `GEMINI_API_KEY` 时指向 Gemini 的 OpenAI 兼容端点，否则用 `OPENAI_API_KEY` 走 OpenAI。LangChain 的具体类型只出现在 `skills/` 层和各 agent 的链定义里。
+
+Dashboard 事件（`LLM_CALL` / `LLM_RESPONSE`）以前在封装函数里手动 `bus.post`，现在改成 [`skills/llm_events.py`](workflow/skills/llm_events.py) 的 `BusCallbackHandler`（一个 LangChain 回调），`run_chain` 每次调用挂一个带 `agent_id` / `step` 的实例。这样不管调用是走便捷封装还是某条 LCEL 链，事件都能正常发出。
+
+**结构化输出**：这个 pipeline 大量依赖 LLM 返回结构化数据（教授列表、调研档案、意图识别结果）。Agent 1 / Agent 2 用 `call_llm_structured` + Pydantic 模型（`ProfessorList` / `ProfessorResearch`），由服务端强制 schema，比早期「纯 prompt 描述格式 + `json.loads`」稳定得多——不会出现 markdown 代码块包裹、字段漂移、类型不对等问题。Agent 0 意图识别和 auto-fill 仍用 `json_object` 模式 + `JsonOutputParser`（字段是动态的，不适合固定 schema）。
 
 选 GPT-4o 而不是更小的模型，是因为调研阶段需要对学术页面做深度理解和信息抽取，小模型在这类任务上的幻觉率明显更高，一旦抽取的教授信息失真，后续简历和邮件质量就会崩掉。用更强的模型保证数据质量，比用便宜模型然后加一堆校验逻辑更简洁。
+
+---
+
+## 编排：LangGraph `StateGraph`
+
+之前 pipeline 的「搜索 → 逐个教授跑 Agent 2-5」这段循环，在 `main.py`、`run_research.py`、`run_email.py`、`run_intake.py` 和 `dashboard.py` 里各写了一遍，逻辑还各有细微出入（错误处理、事件发送）。改成一张 LangGraph 图之后，五个入口都调 [`graph.run_pipeline(mode, ...)`](workflow/graph/pipeline.py)，只有一份编排逻辑。
+
+图的形状是**扇出**：`search` 节点产出教授列表，然后用 LangGraph 的 `Send` 给每位教授起一个独立分支跑后续 agent。每个分支只写 `results` 这一个键（用 `operator.add` 归约成列表拼接），所以分支之间永远不会在共享 state 上打架。三种模式（`full` / `research` / `email`）复用同一批节点函数，只是入口节点和分支节点不同——`build_pipeline(mode)` 按表装配。
+
+Agent 类本身没动，它们就是节点的实现。选 LangGraph 而不是继续手写循环，一是去重，二是拿到统一的 state 模型、扇出/归约原语和 streaming 能力（dashboard 之后可以直接消费图的事件流）。
+
+Agent 0 的采集对话也拆成了一张小图 [`graph/intake_graph.py`](workflow/graph/intake_graph.py)：`classify → apply_fields →（回复够长？）→ generate_reply → finalize`。每收到一条用户消息跑一次，把「意图识别 / 字段合并 / 兜底回复」这几步显式化，`Agent0Intake` 只保留 profile / history 状态和 LCEL 链。stdin / 聊天框仍由调用方（CLI 循环或 dashboard）持有，没有引入 `interrupt`，交互 UX 不变。
 
 ---
 
@@ -23,6 +44,8 @@ LLM 调用统一走 LangChain 的 `ChatOpenAI`，核心原因是**接口标准�
 Tavily 是专门面向 AI agent 的搜索 API，返回的结果已经是干净的文本摘要，不需要再解析 HTML。对于这个项目来说价值很明显——Agent 1 和 Agent 2 需要的是教授研究方向的语义信息，不需要完整网页。Tavily 的结果质量比 DuckDuckGo 高，尤其是学术相关的长尾查询。
 
 但 Tavily 是付费的，所以必须有 fallback。DuckDuckGo 有非官方 Python 包，免费且不需要 API key，作为降级方案足够用。这个"主力 + fallback"的设计让项目对没有 Tavily key 的用户也能跑起来，降低了使用门槛。
+
+`WebSearchSkill.as_tools()` 把 `search` / `fetch_page` 包成 LangChain `StructuredTool`，供后续 tool-calling agent（LangGraph）使用；当前流水线里 agent 仍直接调方法，因为它们要的是 typed dict 列表而非工具调用。
 
 ---
 
