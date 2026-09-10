@@ -36,14 +36,15 @@
 
 ## Overview
 
-Cold Email Client runs a 5-agent sequential workflow:
+Cold Email Client runs a 5-agent pipeline, orchestrated by LangGraph — Agent 1
+discovers the professors, then a fan-out branch runs Agents 2–5 for each one:
 
 ```
 Research Domain (user input)
         ↓
 [Agent 1] Web Search + LLM  →  professor list
-        ↓
-[Agent 2] Scrape + LLM      →  deep research profile (per professor)
+        ↓                       ┈┈ fan out per professor ┈┈
+[Agent 2] Scrape + LLM      →  deep research profile
         ↓
 [Agent 3] TF-IDF + LLM      →  tailored LaTeX resume
         ↓

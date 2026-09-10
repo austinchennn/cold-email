@@ -36,14 +36,15 @@
 
 ## 项目概览
 
-Cold Email Client 运行一条 5-Agent 顺序流水线：
+Cold Email Client 运行一条 5-Agent 流水线，由 LangGraph 编排 —— Agent 1 先发现教授，
+然后对每位教授扇出一个分支跑 Agent 2–5：
 
 ```
 研究方向（用户输入）
         ↓
 [Agent 1] 网络搜索 + LLM  →  教授列表
-        ↓
-[Agent 2] 抓取 + LLM      →  每位教授的深度调研档案
+        ↓                     ┈┈ 按教授扇出 ┈┈
+[Agent 2] 抓取 + LLM      →  深度调研档案
         ↓
 [Agent 3] TF-IDF + LLM    →  定制 LaTeX 简历
         ↓
