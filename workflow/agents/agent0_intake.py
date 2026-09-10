@@ -48,8 +48,8 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 from config.settings import DATA_DIR, MAX_PROFESSORS
 from skills.llm_client import get_chat_model, run_chain
-from skills.intent_router import classify_intent
 from skills.event_bus import bus, Event, EventType
+from graph.intake_graph import build_intake_turn_graph
 
 logger = logging.getLogger(__name__)
 
@@ -169,6 +169,8 @@ class Agent0Intake:
             | get_chat_model(json_mode=True)
             | JsonOutputParser()
         )
+        # One conversation turn = one run of this LangGraph state machine.
+        self._turn_graph = build_intake_turn_graph(self)
 
     # ── Profile persistence ───────────────────────────────────────────────────
 
@@ -275,31 +277,17 @@ class Agent0Intake:
         bus.post(Event(EventType.AGENT_START, self.AGENT_ID,
                        {"step": "chat_turn"}))
 
-        # 追加用户消息到历史
-        self._history.append({"role": "user", "content": user_message})
+        # One turn = one run of the intake state machine (see graph/intake_graph.py).
+        # The graph appends the user + assistant messages to self._history,
+        # merges extracted fields into self._profile, and saves.
+        final = self._turn_graph.invoke({"user_message": user_message})
 
-        # ── Step 1: 意图识别 + 信息提取 ──────────────────────────────────────
-        intent_result = classify_intent(self._history, self._profile)
-        intent = intent_result["intent"]
-        fields = intent_result.get("fields", {})
-        llm_reply = intent_result.get("reply", "")
+        intent         = final.get("intent", "chat")
+        updated_fields = final.get("updated_fields", {})
+        llm_reply      = final.get("reply", "")
 
-        # ── Step 2: 根据意图行动 ─────────────────────────────────────────────
-        updated_fields = {}
-
-
-        if fields:
-            updated_fields = self._merge_fields(fields)
-            if updated_fields:
-                self.save()
-                logger.info(f"Agent0: updated fields: {list(updated_fields.keys())}")
-
-        # ── Step 3: 如果意图识别只返回了简短 reply，用对话 LLM 补充 ────────
-        if not llm_reply or len(llm_reply) < 5:
-            llm_reply = self._generate_reply()
-
-        # 追加 assistant 回复到历史
-        self._history.append({"role": "assistant", "content": llm_reply})
+        if updated_fields:
+            logger.info(f"Agent0: updated fields: {list(updated_fields.keys())}")
 
         bus.post(Event(EventType.AGENT_COMPLETE, self.AGENT_ID,
                        {"intent": intent,

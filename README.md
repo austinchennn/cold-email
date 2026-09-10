@@ -79,6 +79,7 @@ A live terminal dashboard (built with [Textual](https://github.com/Textualize/te
 | Category | Library |
 |---|---|
 | LLM | LangChain — `langchain-openai` + LCEL, Pydantic structured output (GPT-4o / Gemini) |
+| Orchestration | LangGraph `StateGraph` — fan-out pipeline (`workflow/graph/`) |
 | Web search | Tavily API, `duckduckgo-search` |
 | Scraping | `requests`, `beautifulsoup4` |
 | NLP | `scikit-learn` (TF-IDF + cosine similarity) |
@@ -95,7 +96,8 @@ A live terminal dashboard (built with [Textual](https://github.com/Textualize/te
 ```
 cold-email/
 ├── workflow/
-│   ├── agents/          # Agent 0–5 pipeline logic
+│   ├── agents/          # Agent 0–5 node implementations
+│   ├── graph/           # LangGraph pipeline + intake state machine
 │   ├── skills/          # Reusable components (LLM, search, Gmail, etc.)
 │   ├── config/          # Settings and domain config
 │   ├── data/            # Professor profiles and user profile

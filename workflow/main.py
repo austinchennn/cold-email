@@ -8,11 +8,11 @@ Usage
   cd workflow
   python main.py
 
-Linear execution order
-----------------------
+Execution order (see graph/pipeline.py for the LangGraph definition)
+-------------------------------------------------------------------
   1. User inputs research domain (and optional professor count).
-  2. Agent1  →  discovers professors  →  data/professors/raw_list.json
-  3. For each professor (one at a time):
+  2. search node        →  Agent1 discovers professors  →  data/professors/raw_list.json
+  3. Per professor (fan-out branch):
        Agent2  →  deep research       →  data/professors/deep_research/{slug}_prof.json
        Agent3  →  tailored resume     →  outputs/tailored_resumes/{slug}_resume.tex
        Agent4  →  cold email draft    →  outputs/emails/{slug}_email.txt
@@ -21,7 +21,7 @@ Linear execution order
 Prerequisites
 -------------
   pip install -r requirements.txt
-  cp .env.example .env   # fill in OPENAI_API_KEY
+  cp .env.example .env   # fill in OPENAI_API_KEY / GEMINI_API_KEY
   # To actually send: set GMAIL_ENABLED=true, add config/gmail_credentials.json
 """
 
@@ -30,11 +30,7 @@ import sys
 from pathlib import Path
 
 from config.settings import MAX_PROFESSORS, TAILORED_RESUMES_DIR, EMAILS_DIR, GMAIL_ENABLED
-from agents.agent1_search   import Agent1Search
-from agents.agent2_research import Agent2Research
-from agents.agent3_resume   import Agent3Resume
-from agents.agent4_email    import Agent4Email
-from agents.agent5_send     import Agent5Send
+from graph import run_pipeline
 
 logging.basicConfig(
     level=logging.INFO,
@@ -48,60 +44,36 @@ _SEP  = "─" * 62
 _SEP2 = "═" * 62
 
 
+def _rel(path: str) -> str:
+    try:
+        return str(Path(path).relative_to(Path(__file__).parent))
+    except (ValueError, TypeError):
+        return str(path)
+
+
 def run_workflow(domain: str, max_professors: int = MAX_PROFESSORS) -> None:
 
-    # ── Agent 1 ──────────────────────────────────────────────────────────────
     print(f"\n{_SEP}")
-    print(f"  AGENT 1 — Professor Discovery")
+    print("  Cold-email pipeline  (LangGraph)")
     print(f"  Domain : {domain}   Max : {max_professors}")
     print(_SEP)
 
-    professors = Agent1Search().run(domain, max_count=max_professors)
-    print(f"  Found {len(professors)} professors.\n")
+    results = run_pipeline("full", domain=domain, max_professors=max_professors)
 
-    if not professors:
-        logger.error("No professors found. Exiting.")
+    if not results:
+        logger.error("No professors processed. Exiting.")
         return
 
-    results = []
-
-    # ── Per-professor loop ────────────────────────────────────────────────────
-    for idx, professor in enumerate(professors, 1):
-        name = professor.get("name", "Unknown")
-
+    for idx, r in enumerate(results, 1):
         print(f"\n{_SEP}")
-        print(f"  [{idx:02d}/{len(professors):02d}]  {name}")
-        print(f"  {professor.get('university', '')}  ·  {professor.get('department', '')}")
-        print(_SEP)
-
-        # Agent 2 — deep research
-        print("  → Agent 2 : Deep research …")
-        research = Agent2Research().run(professor)
-
-        # Agent 3 — tailored resume  (internally calls ProjectMatcherSkill)
-        print("  → Agent 3 : Tailoring resume …")
-        resume_path = Agent3Resume().run(research)
-
-        # Agent 4 — cold email
-        print("  → Agent 4 : Writing cold email …")
-        email_path  = Agent4Email().run(research, resume_path)
-
-        # Agent 5 — Gmail send
-        send_label = "LIVE SEND" if GMAIL_ENABLED else "dry-run (GMAIL_ENABLED=false)"
-        print(f"  \u2192 Agent 5 : Gmail send ({send_label}) \u2026")
-        gmail_id = Agent5Send().run(research, email_path)
-
-        rel_resume = Path(resume_path).relative_to(Path(__file__).parent)
-        rel_email  = Path(email_path).relative_to(Path(__file__).parent)
-        print(f"  \u2713  Resume  : {rel_resume}")
-        print(f"  \u2713  Email   : {rel_email}")
-        if gmail_id:
-            print(f"  \u2713  Sent    : gmail_id={gmail_id}")
-
-        results.append(
-            {"name": name, "resume": str(rel_resume),
-             "email": str(rel_email), "gmail_id": gmail_id}
-        )
+        print(f"  [{idx:02d}/{len(results):02d}]  {r.get('name', 'Unknown')}")
+        if r.get("_error"):
+            print(f"  x  research failed: {r['_error']}")
+            continue
+        print(f"  ok  Resume : {_rel(r.get('resume', ''))}")
+        print(f"  ok  Email  : {_rel(r.get('email', ''))}")
+        if r.get("gmail_id"):
+            print(f"  ok  Sent   : gmail_id={r['gmail_id']}")
 
     # ── Summary ───────────────────────────────────────────────────────────────
     sent_count = sum(1 for r in results if r.get("gmail_id"))

@@ -719,29 +719,14 @@ class DashboardApp(App):
     def _run_full_workflow(self, domain: str, user_context: str, profile: dict) -> None:
         try:
             from config.settings import MAX_PROFESSORS
-            from agents.agent1_search   import Agent1Search
-            from agents.agent2_research import Agent2Research
-            from agents.agent3_resume   import Agent3Resume
-            from agents.agent4_email    import Agent4Email
-            from agents.agent5_send     import Agent5Send
+            from graph import run_pipeline
 
-            max_prof = profile.get("max_professors", MAX_PROFESSORS)
-            bus.post(Event(EventType.WORKFLOW_START, 0, {"domain": domain}))
-
-            professors = Agent1Search().run(domain, max_count=max_prof,
-                                            user_context=user_context)
-            for prof in professors:
-                name = prof.get("name", "?")
-                bus.post(Event(EventType.PROFESSOR_START, 0, {"name": name}))
-                research    = Agent2Research().run(prof, user_context=user_context)
-                resume_path = Agent3Resume().run(research)
-                email_path  = Agent4Email().run(research, resume_path)
-                Agent5Send().run(research, email_path)
-
-            bus.post(Event(EventType.WORKFLOW_DONE, 0, {"count": len(professors)}))
-        except Exception as exc:
-            _logger.exception("Workflow error")
-            bus.post(Event(EventType.WORKFLOW_ERROR, 0, {"error": str(exc)}))
+            run_pipeline(
+                "full", domain=domain, user_context=user_context,
+                max_professors=profile.get("max_professors", MAX_PROFESSORS),
+            )
+        except Exception:
+            _logger.exception("Workflow error")  # run_pipeline already posted WORKFLOW_ERROR
         finally:
             self._running = False
 
@@ -749,56 +734,25 @@ class DashboardApp(App):
     def _run_research_only(self, domain: str, user_context: str, profile: dict) -> None:
         try:
             from config.settings import MAX_PROFESSORS
-            from agents.agent1_search   import Agent1Search
-            from agents.agent2_research import Agent2Research
+            from graph import run_pipeline
 
-            max_prof = profile.get("max_professors", MAX_PROFESSORS)
-            bus.post(Event(EventType.WORKFLOW_START, 0, {"domain": domain}))
-
-            professors = Agent1Search().run(domain, max_count=max_prof,
-                                            user_context=user_context)
-            for prof in professors:
-                name = prof.get("name", "?")
-                bus.post(Event(EventType.PROFESSOR_START, 0, {"name": name}))
-                Agent2Research().run(prof, user_context=user_context)
-
-            bus.post(Event(EventType.WORKFLOW_DONE, 0, {"count": len(professors)}))
-        except Exception as exc:
+            run_pipeline(
+                "research", domain=domain, user_context=user_context,
+                max_professors=profile.get("max_professors", MAX_PROFESSORS),
+            )
+        except Exception:
             _logger.exception("Research workflow error")
-            bus.post(Event(EventType.WORKFLOW_ERROR, 0, {"error": str(exc)}))
         finally:
             self._running = False
 
     @work(thread=True, exclusive=False)
     def _run_email_only(self, user_context: str, profile: dict) -> None:
         try:
-            from agents.agent3_resume import Agent3Resume
-            from agents.agent4_email  import Agent4Email
-            from agents.agent5_send   import Agent5Send
-            from config.settings import DEEP_RESEARCH_DIR
-            import json as _json
+            from graph import run_pipeline
 
-            bus.post(Event(EventType.WORKFLOW_START, 0, {"action": "email_only"}))
-
-            # Load existing research profiles
-            research_files = sorted(DEEP_RESEARCH_DIR.glob("*_prof.json"))
-            if not research_files:
-                bus.post(Event(EventType.WORKFLOW_ERROR, 0,
-                               {"error": "No research profiles found. Run research first."}))
-                return
-
-            for rf in research_files:
-                research = _json.loads(rf.read_text(encoding="utf-8"))
-                name = research.get("name", "?")
-                bus.post(Event(EventType.PROFESSOR_START, 0, {"name": name}))
-                resume_path = Agent3Resume().run(research)
-                email_path  = Agent4Email().run(research, resume_path)
-                Agent5Send().run(research, email_path)
-
-            bus.post(Event(EventType.WORKFLOW_DONE, 0, {"count": len(research_files)}))
-        except Exception as exc:
+            run_pipeline("email", user_context=user_context)
+        except Exception:
             _logger.exception("Email workflow error")
-            bus.post(Event(EventType.WORKFLOW_ERROR, 0, {"error": str(exc)}))
         finally:
             self._running = False
 

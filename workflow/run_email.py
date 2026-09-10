@@ -36,9 +36,7 @@ from pathlib import Path
 from config.settings import (
     DEEP_RESEARCH_DIR, TAILORED_RESUMES_DIR, EMAILS_DIR, GMAIL_ENABLED,
 )
-from agents.agent3_resume import Agent3Resume
-from agents.agent4_email  import Agent4Email
-from agents.agent5_send   import Agent5Send
+from graph import run_pipeline
 
 logging.basicConfig(
     level=logging.INFO,
@@ -59,50 +57,23 @@ def run_email(research_list: list[dict]) -> list[dict]:
     -------
     同 research_list，每项追加 resume / email / gmail_id 字段。
     """
-    send_label = "LIVE SEND" if GMAIL_ENABLED else "dry-run（GMAIL_ENABLED=false）"
-    results = []
+    # Agent 3 → 4 → 5 per professor, via the LangGraph pipeline (graph/pipeline.py)
+    results = run_pipeline("email", professors=list(research_list))
 
-    for idx, research in enumerate(research_list, 1):
-        name = research.get("name", "Unknown")
+    for idx, r in enumerate(results, 1):
+        name = r.get("name", "Unknown")
         print(f"\n{_SEP}")
-        print(f"  [{idx:02d}/{len(research_list):02d}]  {name}")
-        print(_SEP)
-
-        # Agent 3 — 定制简历
-        print("  → Agent 3 : 定制简历 …")
-        try:
-            resume_path = Agent3Resume().run(research)
-        except Exception as exc:
-            logger.error(f"Agent3 失败: {exc}")
-            results.append({**research, "_error_agent3": str(exc)})
-            continue
-
-        # Agent 4 — 撰写冷邮件
-        print("  → Agent 4 : 撰写冷邮件 …")
-        try:
-            email_path = Agent4Email().run(research, resume_path)
-        except Exception as exc:
-            logger.error(f"Agent4 失败: {exc}")
-            results.append({**research, "resume": str(resume_path), "_error_agent4": str(exc)})
-            continue
-
-        # Agent 5 — Gmail 发送
-        print(f"  → Agent 5 : Gmail 发送（{send_label}）…")
-        try:
-            gmail_id = Agent5Send().run(research, email_path)
-        except Exception as exc:
-            logger.error(f"Agent5 失败: {exc}")
-            gmail_id = None
-
-        rel_resume = _rel(resume_path)
-        rel_email  = _rel(email_path)
-        print(f"  ✓  简历  : {rel_resume}")
-        print(f"  ✓  邮件  : {rel_email}")
-        if gmail_id:
-            print(f"  ✓  已发送: gmail_id={gmail_id}")
-
-        results.append({**research, "resume": str(rel_resume),
-                        "email": str(rel_email), "gmail_id": gmail_id})
+        print(f"  [{idx:02d}/{len(results):02d}]  {name}")
+        err = next((r[k] for k in ("_error_agent3", "_error_agent4", "_error_agent5")
+                    if r.get(k)), "")
+        if err:
+            print(f"  x  失败: {err}")
+        if r.get("resume"):
+            print(f"  ✓  简历  : {_rel(r['resume'])}")
+        if r.get("email"):
+            print(f"  ✓  邮件  : {_rel(r['email'])}")
+        if r.get("gmail_id"):
+            print(f"  ✓  已发送: gmail_id={r['gmail_id']}")
 
     # ── 汇总 ─────────────────────────────────────────────────────────────────
     sent  = sum(1 for r in results if r.get("gmail_id"))
