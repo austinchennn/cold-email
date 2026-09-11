@@ -162,7 +162,7 @@ GMAIL_ENABLED=false            # 设为 true 以实际发送邮件
 ```
 Agent 0 ▶  你好！我是你的冷邮件助手。先简单介绍一下自己吧。
 
-你   ▶  我叫 Austin，夜大CS本科，想申请机器人学习方向的PhD。
+你   ▶  我叫 Austin，多大CS本科，想申请机器人学习方向的PhD。
 
 Agent 0 ▶  明白！你的联系邮箱是？
 
