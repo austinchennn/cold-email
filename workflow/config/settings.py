@@ -18,6 +18,14 @@ LLM_MODEL: str       = os.getenv("LLM_MODEL", "gpt-4o")
 LLM_TEMPERATURE: float = float(os.getenv("LLM_TEMPERATURE", "0.3"))
 MAX_RETRIES: int     = 3
 
+# ── Decision model (jev via TypeSafe) ─────────────────────────────────────────
+# jev outputs probabilities over fixed options instead of generating text. It is
+# used for routing decisions (intent classification); unset key = LLM fallback.
+TYPESAFE_API_KEY: str = os.getenv("TYPESAFE_API_KEY", "")
+DECISION_MODEL: str   = os.getenv("DECISION_MODEL", "jev-latest")
+# Below this confidence (0-1) the jev answer is discarded and the LLM decides.
+DECISION_MIN_CONFIDENCE: float = float(os.getenv("DECISION_MIN_CONFIDENCE", "0.5"))
+
 # ── Optional search APIs ───────────────────────────────────────────────────────
 TAVILY_API_KEY: str  = os.getenv("TAVILY_API_KEY", "")
 
