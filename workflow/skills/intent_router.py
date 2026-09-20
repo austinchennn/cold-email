@@ -19,8 +19,10 @@ from typing import Any, Dict
 
 from langchain_core.exceptions import OutputParserException
 from langchain_core.output_parsers import JsonOutputParser
+from langchain_core.messages import AIMessage, HumanMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
+from skills.decision_client import decide
 from skills.llm_client import get_chat_model, run_chain
 from skills.event_bus import bus, Event, EventType
 
@@ -36,6 +38,29 @@ VALID_INTENTS = frozenset({
     "edit_profile",
     "chat",
 })
+
+# jev picks the intent from these options (it only sees the recent turns, not the
+# profile). Intents in _LLM_INTENTS still need the LLM afterwards, because their
+# result carries extracted fields / a written reply; the rest are fully decided.
+_INTENT_OPTIONS = {
+    "update_profile": "The user provides NEW personal info (name, school, major, GPA, "
+                      "skills, research interests, target regions/universities, etc.).",
+    "run_all":        "The user wants to run the FULL pipeline (search, research, "
+                      "resume, email, send).",
+    "run_research":   "The user wants to run ONLY the research part (professor search "
+                      "and deep research).",
+    "run_email":      "The user wants to run ONLY the email part (generate resumes and "
+                      "emails from existing research).",
+    "show_profile":   "The user wants to SEE / review their current stored profile.",
+    "edit_profile":   "The user wants to CHANGE a specific field of their profile.",
+    "chat":           "Anything else: greetings, questions, general conversation.",
+}
+_INTENT_QUESTION = (
+    "Which intent does the LATEST user message in this conversation have? "
+    "Earlier turns are context only."
+)
+_LLM_INTENTS = frozenset({"update_profile", "edit_profile", "chat"})
+_DECISION_HISTORY_TURNS = 6
 
 _INTENT_SYSTEM = """\
 You are an intent-recognition and information-extraction engine for a cold-email
@@ -105,6 +130,14 @@ _INTENT_CHAIN = (
 )
 
 
+def _to_decision_state(history: list[Dict[str, str]]) -> list:
+    """Recent turns as LangChain messages — the only text sent to jev."""
+    return [
+        (HumanMessage if m["role"] == "user" else AIMessage)(content=m["content"])
+        for m in history[-_DECISION_HISTORY_TURNS:]
+    ]
+
+
 def classify_intent(
     messages: list[Dict[str, str]],
     current_profile: Dict[str, Any],
@@ -137,6 +170,24 @@ def classify_intent(
 
     history = [m for m in messages if m["role"] != "system"]
 
+    # jev decides the intent when configured and confident; otherwise the LLM does.
+    decision = decide(
+        "intent",
+        _INTENT_QUESTION,
+        _INTENT_OPTIONS,
+        _to_decision_state(history),
+        agent_id=0,
+        step="intent_decide",
+    )
+    if decision is not None:
+        if decision.choice not in _LLM_INTENTS:
+            # Nothing to extract; an empty reply makes the graph write one.
+            return {"intent": decision.choice, "fields": {}, "reply": ""}
+        system += (
+            f'\n## Decided intent\nThe intent is already decided as "{decision.choice}". '
+            "Use exactly that intent and only extract fields / write the reply.\n"
+        )
+
     try:
         result = run_chain(
             _INTENT_CHAIN,
@@ -146,13 +197,13 @@ def classify_intent(
         )
     except OutputParserException as exc:
         logger.error(f"Intent classification JSON parse failed: {exc}")
-        return {"intent": "chat", "fields": {}, "reply": ""}
+        return {"intent": decision.choice if decision else "chat", "fields": {}, "reply": ""}
 
     if not isinstance(result, dict):
         result = {}
 
-    # Validate intent
-    intent = result.get("intent", "chat")
+    # Validate intent (jev's decision wins over whatever the LLM echoed back)
+    intent = decision.choice if decision else result.get("intent", "chat")
     if intent not in VALID_INTENTS:
         intent = "chat"
     result["intent"] = intent
