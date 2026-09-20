@@ -247,6 +247,9 @@ python dashboard.py
 | `GEMINI_API_KEY` | — | Google Gemini API key (takes priority over OpenAI) |
 | `LLM_MODEL` | `gpt-4o` | Model name |
 | `LLM_TEMPERATURE` | `0.3` | Generation temperature |
+| `TYPESAFE_API_KEY` | — | TypeSafe key for the jev decision model (optional; intent classification uses the LLM when unset) |
+| `DECISION_MODEL` | `jev-latest` | jev model used for routing decisions |
+| `DECISION_MIN_CONFIDENCE` | `0.5` | Below this confidence (0–1) the jev answer is dropped and the LLM decides |
 | `TAVILY_API_KEY` | — | Tavily search API key (optional) |
 | `MAX_PROFESSORS` | `10` | Max professors to discover per run |
 | `TOP_K_PROJECTS` | `3` | Number of resume projects to inject |
