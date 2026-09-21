@@ -241,6 +241,9 @@ python dashboard.py
 | `GEMINI_API_KEY` | — | Google Gemini API 密钥（优先级高于 OpenAI） |
 | `LLM_MODEL` | `gpt-4o` | 使用的模型名称 |
 | `LLM_TEMPERATURE` | `0.3` | 生成温度 |
+| `TYPESAFE_API_KEY` | — | jev 决策模型（TypeSafe）的 API 密钥（可选；不填则意图识别仍由 LLM 完成） |
+| `DECISION_MODEL` | `jev-latest` | 用于路由决策的 jev 模型 |
+| `DECISION_MIN_CONFIDENCE` | `0.5` | 置信度（0–1）低于该值时丢弃 jev 的结果，改由 LLM 决策 |
 | `TAVILY_API_KEY` | — | Tavily 搜索 API 密钥（可选） |
 | `MAX_PROFESSORS` | `10` | 每次最多发现的教授数量 |
 | `TOP_K_PROJECTS` | `3` | 注入简历的项目数量 |
